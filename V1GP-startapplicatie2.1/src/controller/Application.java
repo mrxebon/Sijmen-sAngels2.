@@ -8,7 +8,7 @@ import server.JSONFileServer;
 public class Application {
 
 	/**
-	 * beermeneer
+	 * beermeneer 2.0
 	 *schrijf hierin om te push testen of je kunt committen met githu
 	 * Deze klasse is het startpunt voor de applicatie. Hierin maak je een server 
 	 * op een bepaalde poort (bijv. 8888). Daarna is er een PrIS-object gemaakt. Dit
