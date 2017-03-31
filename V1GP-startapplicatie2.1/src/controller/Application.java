@@ -8,7 +8,7 @@ import server.JSONFileServer;
 public class Application {
 
 	/**
-	 * Beermeneer
+	 *
 	 * Deze klasse is het startpunt voor de applicatie. Hierin maak je een server 
 	 * op een bepaalde poort (bijv. 8888). Daarna is er een PrIS-object gemaakt. Dit
 	 * object fungeert als toegangspunt van het domeinmodel. Hiervandaan kan alle
