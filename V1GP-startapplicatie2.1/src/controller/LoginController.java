@@ -12,6 +12,7 @@ class LoginController implements Handler {
 	private PrIS informatieSysteem;
 	
 	/**
+	 * op
 	 * De LoginController klasse moet alle algemene aanvragen afhandelen. 
 	 * Methode handle() kijkt welke URI is opgevraagd en laat dan de juiste 
 	 * methode het werk doen. Je kunt voor elke nieuwe URI een nieuwe methode 
