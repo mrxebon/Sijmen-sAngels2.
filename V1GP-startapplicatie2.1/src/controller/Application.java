@@ -8,6 +8,7 @@ import server.JSONFileServer;
 public class Application {
 
 	/**
+	 * ik schrijf hierin om het pushen te testen, gegroet, david de cock
 	 * beermeneer 2.0
 	 *schrijf hierin om te push testen of je kunt committen met githu
 	 * Deze klasse is het startpunt voor de applicatie. Hierin maak je een server 
