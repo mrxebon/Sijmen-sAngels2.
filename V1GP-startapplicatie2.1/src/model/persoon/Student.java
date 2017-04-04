@@ -5,6 +5,7 @@ public class Student extends Persoon {
 
 	private int studentNummer;
 	private String groepId;
+	private double aanwezigheid;
 
 	public Student(
 		String pVoornaam, 
@@ -21,6 +22,7 @@ public class Student extends Persoon {
 			pGebruikersnaam);
 		this.setStudentNummer(pStudentNummer);
 		this.setGroepId("");
+		this.setAanwezigheid(0.0);
 	}
 
 
@@ -30,6 +32,14 @@ public class Student extends Persoon {
  
   public void setGroepId(String pGroepId) {
     this.groepId= pGroepId;	
+  }
+  
+  public double getAanwezigheid() {
+    return this.aanwezigheid;	
+  }
+ 
+  public void setAanwezigheid(double procent) {
+    this.aanwezigheid= procent;	
   }
  
 	public int getStudentNummer() {

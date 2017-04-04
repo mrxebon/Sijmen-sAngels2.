@@ -70,7 +70,8 @@ public class MedestudentenController implements Handler {
 					.add("id", lMedeStudent.getStudentNummer())																	//vul het JsonObject		     
 					.add("firstName", lMedeStudent.getVoornaam())	
 					.add("lastName", lLastName)				     
-				  .add("sameGroup", lZelfdeGroep);					     
+				  .add("sameGroup", lZelfdeGroep)
+				  .add("presence", lMedeStudent.getAanwezigheid());					     
 			  
 			  lJsonArrayBuilder.add(lJsonObjectBuilderVoorStudent);													//voeg het JsonObject aan het array toe				     
 			}
