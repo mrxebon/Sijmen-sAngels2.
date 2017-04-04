@@ -27,6 +27,17 @@ public class Klas {
 		return this.deStudenten;
 	}
 	
+	public boolean equals(Object andereObject){
+		boolean gelijkeObject = false;
+		if (andereObject instanceof Klas){
+			Klas andereKlas = (Klas) andereObject;
+			if(this.naam.equals(andereKlas.naam)){
+				gelijkeObject = true;
+			}
+		}
+		return gelijkeObject;
+	}
+	
 	public boolean bevatStudent(Student pStudent) {
 		for (Student lStudent : this.getStudenten()) {
 			if (lStudent==pStudent) {

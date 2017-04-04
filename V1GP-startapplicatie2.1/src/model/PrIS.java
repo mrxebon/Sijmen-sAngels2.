@@ -123,14 +123,12 @@ public class PrIS {
 	public Klas getKlas(String klasNaam) {
 		// used
 		Klas lGevondenKlas = null;
-		
 		for (Klas klas : deKlassen) {
-			if (klas.equals(klasNaam)) {
+			if (klas.getNaam().equals(klasNaam)) {
 				lGevondenKlas = klas;
 				break;
 			}
 		}
-		
 		return lGevondenKlas;
 	}
 	

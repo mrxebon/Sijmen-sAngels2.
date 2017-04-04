@@ -57,17 +57,17 @@
     <div class="my-title">Absentielijst opvragen</div>
     <table>
       <tr>
-        <td class="voornaam"><a href="#/student/absentielijst">V1A </a></td>
-        <td class="voornaam"><a href="#/student/absentielijst">V1B </a></td>
-        <td class="voornaam"><a href="#/student/absentielijst">V1C </a></td>
-        <td class="voornaam"><a href="#/student/absentielijst">V1D </a></td>
-        <td class="voornaam"><a href="#/student/absentielijst">V1E </a></td>
-        <td class="voornaam"><a href="#/student/absentielijst/V1F">V1F [[_ar_subsubroute_data.subsubpage]]</a></td>
+        <td class="voornaam"><a href="#/student/absentielijst/V1A">V1A </a></td>
+        <td class="voornaam"><a href="#/student/absentielijst/V1B">V1B </a></td>
+        <td class="voornaam"><a href="#/student/absentielijst/V1C">V1C </a></td>
+        <td class="voornaam"><a href="#/student/absentielijst/V1D">V1D </a></td>
+        <td class="voornaam"><a href="#/student/absentielijst/V1E">V1E </a></td>
+        <td class="voornaam"><a href="#/student/absentielijst/V1F">V1F </a></td>
       </tr>
       <tr>
         <th class="voornaam">Voornaam </th>
         <th class="achternaam">Achternaam </th>
-        <th class="aanwezigheid">Aanwezigheid </th>
+        <th class="aanwezigheid">Aanwezigheid</th>
       </tr>
       <template is="dom-repeat" items="[[_c_studenten]]">
         <tr>
@@ -80,19 +80,11 @@
 
 
     <iron-ajax
-      id="ajax_medestudenten_ophalen"
+      id="ajax_absentielijst_ophalen"
       method="POST"
-      url="/student/medestudenten/ophalen"
+      url="/student/absentielijst/ophalen"
       handle-as="json"
-      on-response="_medestudenten_ophalen_response_handler">
-    </iron-ajax>
- 
-    <iron-ajax
-      id="ajax_medestudenten_opslaan"
-      method="POST"
-      url="/student/medestudenten/opslaan"
-      handle-as="json"
-      on-response="_medestudenten_opslaan_response_handler">
+      on-response="_absentielijst_ophalen_response_handler">
     </iron-ajax>
 
   </template>
@@ -119,6 +111,9 @@
           c_username: {
             type: String,
           },
+          c_klas: {
+              type: String,
+            },
           c_visible: {
             type: Boolean,                                      /* true when element is the active visible item */
             value: false,
@@ -139,7 +134,7 @@
         _initializing : function() {
           if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
             if (this.c_rol=="student") {                        // voor studenten
-              this._medestudenten_ophalen_request_handler();    //    haal info op van server
+              this._absentielijst_ophalen_request_handler();    //    haal info op van server
             } else {                                            // na handmatige url wijziging zonder login
               var lToast = this.$.toast_invalid_aanroep;        // meldt ongeldige aanroep
               lToast.open();                                    /* het sluiten van deze error verwijst  */
@@ -148,33 +143,18 @@
           }
         },
 
-        _medestudenten_ophalen_request_handler: function() {
-          console.log("_medestudenten_ophalen_request_handler user="+this.c_username);
-          this.$.ajax_medestudenten_ophalen.contentType="application/json";
-          this.$.ajax_medestudenten_ophalen.body={
-            "username":this.c_username
+        _absentielijst_ophalen_request_handler: function() {
+          console.log("_absentielijst_ophalen_request_handler klas="+this.c_klas);
+          this.$.ajax_absentielijst_ophalen.contentType="application/json";
+          this.$.ajax_absentielijst_ophalen.body={
+            "klas":this.c_klas
           };
-          this.$.ajax_medestudenten_ophalen.generateRequest();
+          this.$.ajax_absentielijst_ophalen.generateRequest();
         },
 
-        _medestudenten_ophalen_response_handler: function(request) {
-          console.log("_mededestudenten_ophalen_response_handler aantal studenten="+request.detail.response.length);
+        _absentielijst_ophalen_response_handler: function(request) {
+          console.log("_absentielijst_ophalen_response_handler aantal studenten="+request.detail.response.length);
           this._c_studenten = request.detail.response;
-        },
-
-        _medestudenten_opslaan_request_handler: function() {
-          console.log("_medestudenten_opslaan_request_handler user="+this.c_username);
-          this.$.ajax_medestudenten_opslaan.contentType="application/json";
-          this.$.ajax_medestudenten_opslaan.body={
-              "username":this.c_username,
-              "groupMembers": this._c_studenten
-          };
-          this.$.ajax_medestudenten_opslaan.generateRequest();
-        },
-
-        _medestudenten_opslaan_response_handler: function(request) {
-          console.log("_mededestudenten_opslaan_response_handler errorcode="+request.detail.response.errorcode);
-          this._go_home();		/* verlaat de pagina en ga terug naar home page */
         },
 
        _toast_clicked: function(e) {
