@@ -120,6 +120,20 @@ public class PrIS {
 		return null;
 	}
 	
+	public Klas getKlas(String klasNaam) {
+		// used
+		Klas lGevondenKlas = null;
+		
+		for (Klas klas : deKlassen) {
+			if (klas.equals(klasNaam)) {
+				lGevondenKlas = klas;
+				break;
+			}
+		}
+		
+		return lGevondenKlas;
+	}
+	
 	public Student getStudent(String pGebruikersnaam) {
 		// used
 		Student lGevondenStudent = null;
