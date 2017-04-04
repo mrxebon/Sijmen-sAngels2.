@@ -244,8 +244,11 @@ public class PrIS {
 					// verwijder spaties tussen  dubbele voornamen en tussen bv van der 
 					gebruikersnaam = gebruikersnaam.replace(" ","");
 					String lStudentNrString  = element[0];
+					String lStudentAanwezigheid = element[4];
+					double lAanwezigheid = Double.parseDouble(lStudentAanwezigheid);
 					int lStudentNr = Integer.parseInt(lStudentNrString);
 					lStudent = new Student(element[3], element[2], element[1], "geheim", gebruikersnaam, lStudentNr); //Volgorde 3-2-1 = voornaam, tussenvoegsel en achternaam
+					lStudent.setAanwezigheid(lAanwezigheid); //zet meteen de aanwezigheidspercentage
 					pStudenten.add(lStudent);
 					k.voegStudentToe(lStudent);
 					
