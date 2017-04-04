@@ -8,10 +8,6 @@ import server.JSONFileServer;
 public class Application {
 
 	/**
-	 * Hoih hoi hoi
-	 * ik schrijf hierin om het pushen te testen, gegroet, david de cock
-	 * beermeneer 2.0
-	 *schrijf hierin om te push testen of je kunt committen met githu
 	 * Deze klasse is het startpunt voor de applicatie. Hierin maak je een server 
 	 * op een bepaalde poort (bijv. 8888). Daarna is er een PrIS-object gemaakt. Dit
 	 * object fungeert als toegangspunt van het domeinmodel. Hiervandaan kan alle
@@ -39,6 +35,7 @@ public class Application {
 		LoginController loginController = new LoginController(infoSysteem);
 		MedestudentenController medestudentenController = new MedestudentenController(infoSysteem);
 		ZiekMeldenController ziekMeldenController = new ZiekMeldenController(infoSysteem);
+		AbsentieLijstController absentielijstController = new AbsentieLijstController(infoSysteem);
 				
 		server.registerHandler("/systeemdatum/lesinfo", systeemDatumController);
 
@@ -47,6 +44,7 @@ public class Application {
   	server.registerHandler("/student/medestudenten/ophalen", medestudentenController);
   	server.registerHandler("/student/medestudenten/opslaan", medestudentenController);
   	server.registerHandler("/student/ziekmelden", ziekMeldenController);
+  	server.registerHandler("/student/absentielijst", absentielijstController);
 		
 		server.start();
 	}
