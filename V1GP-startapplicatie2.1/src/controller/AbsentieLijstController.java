@@ -29,16 +29,14 @@ public class AbsentieLijstController implements Handler {
 	
 	private void ophalen(Conversation conversation) {
 		JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
-		String klasnaam = lJsonObjectIn.getString("klas");
-		if(klasnaam == null){ klasnaam = "V1A"; }
-		
-		Klas lKlas = informatieSysteem.getKlas(klasnaam);		// klas van de student opzoeken
+		String klasnaam = ((klasnaam = lJsonObjectIn.getString("klas")) != null) ? klasnaam : "V1B"; //als er geen klas is aangeklikt gebruik V1B
+		Klas lKlas = informatieSysteem.getKlas(klasnaam);		// Zet de klas
 
-    ArrayList<Student> lStudentenVanKlas = lKlas.getStudenten();	// studenten opzoeken
+    ArrayList<Student> lStudentenVanKlas = lKlas.getStudenten();	// Studenten van klas pakken
 		
-		JsonArrayBuilder lJsonArrayBuilder = Json.createArrayBuilder();						// Uiteindelijk gaat er een array...
+		JsonArrayBuilder lJsonArrayBuilder = Json.createArrayBuilder();						// Maak array voor return
 		
-		for (Student lMedeStudent : lStudentenVanKlas) {									        // met daarin voor elke medestudent een JSON-object... 
+		for (Student lMedeStudent : lStudentenVanKlas) {									        // loop door de studenten
 				
 				JsonObjectBuilder lJsonObjectBuilderVoorStudent = Json.createObjectBuilder(); // maak het JsonObject voor een student
 				String lLastName = lMedeStudent.getVolledigeAchternaam();
@@ -48,7 +46,7 @@ public class AbsentieLijstController implements Handler {
 					.add("lastName", lLastName)				 
 				  .add("presence", lMedeStudent.getAanwezigheid());					     
 			  
-			  lJsonArrayBuilder.add(lJsonObjectBuilderVoorStudent);													//voeg het JsonObject aan het array toe				     
+			  lJsonArrayBuilder.add(lJsonObjectBuilderVoorStudent);													//voeg het JsonObject aan de array toe				     
 			
 		}
     String lJsonOutStr = lJsonArrayBuilder.build().toString();												// maak er een string van
