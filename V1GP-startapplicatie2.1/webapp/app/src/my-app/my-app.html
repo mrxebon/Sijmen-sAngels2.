@@ -162,6 +162,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <span>Absentielijst opvragen</span>
           </a>
 
+          <a name="docent_absentienoteren" href$="[[_c_baseURL]]docent/absentienoteren"  verborgen$="[[!_are_strings_equal(_rol, 'docent')]]">
+            <iron-icon icon="social:group"></iron-icon>
+            <span>Absentie noteren</span>
+          </a>
           <!-- beschikbaar voor student--------------------------------------------------- -->
           <a name="student_medestudenten" href$="[[_c_baseURL]]student/medestudenten"  verborgen$="[[!_are_strings_equal(_rol, 'student')]]">
             <iron-icon icon="social:group"></iron-icon>
@@ -240,7 +244,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </section>
 
 <!-- sections voor docent -->
- 
+          <section  name="docent_absentienoteren" 
+                    title="ABSENTIE NOTEREN"
+                    element$="my-absentienoteren">
+            <paper-material elevation="1">
+              <my-absentienoteren
+                c_visible="[[_are_strings_equal(_ar_page, 'docent_absentienoteren')]]"
+                c_rol="[[_rol]]"
+                c_username="[[_username]]"
+                c_klas="[[_ar_subsubroute_data.subsubpage]]">
+              </my-absentienoteren>
+            </paper-material>
+          </section>
+
+          <section  name="docent_absentielijst" 
+                    title="ABSENTIELIJST"
+                    element$="my-absentielijst">
+            <paper-material elevation="1">
+              <my-absentielijst
+                c_visible="[[_are_strings_equal(_ar_page, 'docent_absentielijst')]]"
+                c_rol="[[_rol]]"
+                c_username="[[_username]]"
+                c_klas="[[_ar_subsubroute_data.subsubpage]]">
+              </my-absentielijst>
+            </paper-material>
+          </section>
  <!-- sections voor student -->
           <section  name="student_medestudenten" 
                     title="OVERZICHT MEDESTUDENTEN"
@@ -269,19 +297,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 c_rol="[[_rol]]"
                 c_username="[[_username]]">
               </my-ziekmelden>
-            </paper-material>
-          </section>
-          
-          <section  name="docent_absentielijst" 
-                    title="ABSENTIELIJST"
-                    element$="my-absentielijst">
-            <paper-material elevation="1">
-              <my-absentielijst
-                c_visible="[[_are_strings_equal(_ar_page, 'docent_absentielijst')]]"
-                c_rol="[[_rol]]"
-                c_username="[[_username]]"
-                c_klas="[[_ar_subsubroute_data.subsubpage]]">
-              </my-absentielijst>
             </paper-material>
           </section>
 
