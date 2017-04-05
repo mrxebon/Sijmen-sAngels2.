@@ -22,7 +22,6 @@ public class AbsentieNoterenController implements Handler {
 	}
 
 	public void handle(Conversation conversation) {
-		System.out.println("handle");
 		if (conversation.getRequestedURI().startsWith("/docent/absentienoteren/ophalen")) {
 			ophalen(conversation);
 			
