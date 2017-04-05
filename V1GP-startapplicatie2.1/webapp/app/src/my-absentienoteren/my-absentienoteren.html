@@ -182,13 +182,10 @@
         _absentielijst_ophalen_request_handler: function() {
           console.log("_absentielijst_ophalen_request_handler klas="+this.c_klas);
           this.$.ajax_absentielijst_ophalen.contentType="application/json";
-          console.log("1")
           this.$.ajax_absentielijst_ophalen.body={
             "klas":this.c_klas
           };
-          console.log("2")
           this.$.ajax_absentielijst_ophalen.generateRequest();
-          console.log("3")
         },
 
         _absentielijst_ophalen_response_handler: function(request) {
