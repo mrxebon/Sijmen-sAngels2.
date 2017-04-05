@@ -157,6 +157,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </a>
 
           <!-- beschikbaar voor docent---------------------------------------------------- -->
+          <a name="docent_absentielijst" href$="[[_c_baseURL]]docent/absentielijst"  verborgen$="[[!_are_strings_equal(_rol, 'docent')]]">
+            <iron-icon icon="icons:assignment"></iron-icon>
+            <span>Absentielijst opvragen</span>
+          </a>
 
           <!-- beschikbaar voor student--------------------------------------------------- -->
           <a name="student_medestudenten" href$="[[_c_baseURL]]student/medestudenten"  verborgen$="[[!_are_strings_equal(_rol, 'student')]]">
@@ -166,10 +170,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <a name="student_ziekmelden" href$="[[_c_baseURL]]student/ziekmelden"  verborgen$="[[!_are_strings_equal(_rol, 'student')]]">
             <iron-icon icon="social:group"></iron-icon>
             <span>Ziek melden</span>
-          </a>
-          <a name="student_absentielijst" href$="[[_c_baseURL]]student/absentielijst"  verborgen$="[[!_are_strings_equal(_rol, 'student')]]">
-            <iron-icon icon="icons:assignment"></iron-icon>
-            <span>Absentielijst opvragen</span>
           </a>
 
         </iron-selector>
@@ -272,12 +272,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </paper-material>
           </section>
           
-           <section  name="student_absentielijst" 
+          <section  name="docent_absentielijst" 
                     title="ABSENTIELIJST"
                     element$="my-absentielijst">
             <paper-material elevation="1">
               <my-absentielijst
-                c_visible="[[_are_strings_equal(_ar_page, 'student_absentielijst')]]"
+                c_visible="[[_are_strings_equal(_ar_page, 'docent_absentielijst')]]"
                 c_rol="[[_rol]]"
                 c_username="[[_username]]"
                 c_klas="[[_ar_subsubroute_data.subsubpage]]">

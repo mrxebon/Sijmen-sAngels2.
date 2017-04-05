@@ -27,24 +27,37 @@
       .my-title {
         font-size: 20px;
         color: blue;
-        border-bottom: 1px solid red;           /* a red line */
         padding-bottom: 2px;                    /* space above the border line */
       }
       .voornaam {
-        min-width: 100px;
+        min-width: 200px;
         text-align: left;
        }
       .achternaam {
-        min-width: 100px;
+        min-width: 200px;
         text-align: left;
       }
       .aanwezigheid {
-        min-width: 100px;
+        min-width: 200px;
         text-align: left;
       }
-      .aanwezigheid{
-        min-width: 100px;
+      .klasButton{
+        display:block;	
+	    width: 115px;
+	    height: 25px;
+	    background: #1A9FD9;
+	    margin-left:20px;
+	    padding: 5px;
+	    text-align: center;
+	    border-radius: 5px;
+	    color: white;
+	    font-weight: bold;
+	    text-decoration:none;
       }
+      .studentenTable{
+      	margin-left:20px;
+      }
+      .studentenTable tr:nth-child(even) {background-color: #f2f2f2}
     </style>
 
     <paper-toast
@@ -57,13 +70,15 @@
     <div class="my-title">Absentielijst opvragen</div>
     <table>
       <tr>
-        <td class="voornaam"><a href="#/student/absentielijst/V1A">V1A </a></td>
-        <td class="voornaam"><a href="#/student/absentielijst/V1B">V1B </a></td>
-        <td class="voornaam"><a href="#/student/absentielijst/V1C">V1C </a></td>
-        <td class="voornaam"><a href="#/student/absentielijst/V1D">V1D </a></td>
-        <td class="voornaam"><a href="#/student/absentielijst/V1E">V1E </a></td>
-        <td class="voornaam"><a href="#/student/absentielijst/V1F">V1F </a></td>
+        <td><a class="klasButton" href="#/docent/absentielijst/V1A">V1A </a></td>
+        <td><a class="klasButton" href="#/docent/absentielijst/V1B">V1B </a></td>
+        <td><a class="klasButton" href="#/docent/absentielijst/V1C">V1C </a></td>
+        <td><a class="klasButton" href="#/docent/absentielijst/V1D">V1D </a></td>
+        <td><a class="klasButton" href="#/docent/absentielijst/V1E">V1E </a></td>
+        <td><a class="klasButton" href="#/docent/absentielijst/V1F">V1F </a></td>
       </tr>
+    </table>
+    <table class="studentenTable">
       <tr>
         <th class="voornaam">Voornaam </th>
         <th class="achternaam">Achternaam </th>
@@ -82,7 +97,7 @@
     <iron-ajax
       id="ajax_absentielijst_ophalen"
       method="POST"
-      url="/student/absentielijst/ophalen"
+      url="/docent/absentielijst/ophalen"
       handle-as="json"
       on-response="_absentielijst_ophalen_response_handler">
     </iron-ajax>
@@ -137,7 +152,7 @@
             var getClickedKlas = getUrl.split("/").pop();
   			this.c_klas = getClickedKlas;
   			
-            if (this.c_rol=="student") {                        // voor studenten
+            if (this.c_rol=="docent") {                        // voor studenten
               this._absentielijst_ophalen_request_handler();    //    haal info op van server
             } else {                                            // na handmatige url wijziging zonder login
               var lToast = this.$.toast_invalid_aanroep;        // meldt ongeldige aanroep

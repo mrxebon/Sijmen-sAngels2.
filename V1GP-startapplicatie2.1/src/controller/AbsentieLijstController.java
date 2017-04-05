@@ -22,7 +22,7 @@ public class AbsentieLijstController implements Handler {
 	}
 
 	public void handle(Conversation conversation) {
-		if (conversation.getRequestedURI().startsWith("/student/absentielijst/ophalen")) {
+		if (conversation.getRequestedURI().startsWith("/docent/absentielijst/ophalen")) {
 			ophalen(conversation);
 		}
 	}
