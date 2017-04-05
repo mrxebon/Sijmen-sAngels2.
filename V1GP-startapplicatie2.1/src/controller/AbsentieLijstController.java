@@ -24,7 +24,10 @@ public class AbsentieLijstController implements Handler {
 	public void handle(Conversation conversation) {
 		if (conversation.getRequestedURI().startsWith("/docent/absentielijst/ophalen")) {
 			ophalen(conversation);
-		}
+		} 
+		else if (conversation.getRequestedURI().startsWith("/student/studentabsentie/ophalen")) {
+			studentophalen(conversation);
+		} 
 	}
 	
 	private void ophalen(Conversation conversation) {
@@ -49,6 +52,25 @@ public class AbsentieLijstController implements Handler {
 			  lJsonArrayBuilder.add(lJsonObjectBuilderVoorStudent);													//voeg het JsonObject aan de array toe				     
 			
 		}
+    String lJsonOutStr = lJsonArrayBuilder.build().toString();												// maak er een string van
+		conversation.sendJSONMessage(lJsonOutStr);																				// string gaat terug naar de Polymer-GUI!
+	}
+	
+	private void studentophalen(Conversation conversation) {
+		JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
+		String lGebruikersnaam = lJsonObjectIn.getString("username");
+		Student lStudentZelf = informatieSysteem.getStudent(lGebruikersnaam);
+		JsonArrayBuilder lJsonArrayBuilder = Json.createArrayBuilder();						// Maak array voor return
+				
+		JsonObjectBuilder lJsonObjectBuilderVoorStudent = Json.createObjectBuilder(); // maak het JsonObject voor een student
+		String lLastName = lStudentZelf.getVolledigeAchternaam();
+		lJsonObjectBuilderVoorStudent
+		.add("id", lStudentZelf.getStudentNummer())																	//vul het JsonObject		     
+		.add("firstName", lStudentZelf.getVoornaam())	
+		.add("lastName", lLastName)				 
+		.add("presence", lStudentZelf.getAanwezigheid());					     
+		lJsonArrayBuilder.add(lJsonObjectBuilderVoorStudent);													//voeg het JsonObject aan de array toe				     
+	
     String lJsonOutStr = lJsonArrayBuilder.build().toString();												// maak er een string van
 		conversation.sendJSONMessage(lJsonOutStr);																				// string gaat terug naar de Polymer-GUI!
 	}
