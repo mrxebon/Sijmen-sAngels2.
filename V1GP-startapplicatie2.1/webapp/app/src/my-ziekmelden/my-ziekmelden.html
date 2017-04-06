@@ -1,0 +1,81 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="my-ziekmelden">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <div class="info-text">
+      <br>
+      Op dit moment sta je <b>[[c_is_ziek]]</b> als ziek gemeld.
+      Druk op de knop hieronder om je aan/af te melden als ziek zijnde.
+      <br>
+    </div>
+    <div class="button-input">
+      <paper-button raised on-click="_is_ziek_request_handler">[[c_is_ziek_knop_text]]</paper-button>
+    </div>
+
+    <iron-ajax
+      id="ajax_ziekteupdated"
+      method="POST"
+      url="/student/ziekmelden/ziekteupdated"
+      handle-as="json"
+      on-response="_is_ziek_response_handler">
+    </iron-ajax>
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+      Polymer({
+        is: 'my-ziekmelden',
+
+        properties: {
+          _c_datums: {
+            type: Object,
+          },
+          c_visible: {
+            type: Boolean,
+            value: false,
+            observer: '_is_ziek_request_handler',
+          },
+          c_username: {    
+            type: String,
+          },
+          c_is_ziek: {
+            type: String,
+            value: "niet",
+          },
+          c_is_ziek_knop_text: {
+            type: String,
+            value: "Ziek melden",
+          },
+        },
+
+        _is_ziek_request_handler : function() {
+          this.$.ajax_ziekteupdated.contentType="application/json";
+          this.$.ajax_ziekteupdated.body = {
+            "username": this.c_username
+          };
+          this.$.ajax_ziekteupdated.generateRequest();
+        },
+
+        _is_ziek_response_handler: function(request) {
+          this.c_is_ziek = request.detail.response.is_ziek;
+          if(this.c_is_ziek == "wel") {
+            this.c_is_ziek_knop_text = "Beter melden";
+          }
+          else if(this.c_is_ziek == "niet") {
+            this.c_is_ziek_knop_text = "Ziek melden";
+          }
+        },
+
+      });
+    })();
+  </script>
+</dom-module>
