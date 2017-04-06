@@ -24,4 +24,5 @@ public class Absentie {
 	public Student getStudent(){
 		return leerling;
 	}
+	
 }
