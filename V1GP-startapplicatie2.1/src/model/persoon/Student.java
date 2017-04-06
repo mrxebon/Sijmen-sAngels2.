@@ -6,7 +6,7 @@ public class Student extends Persoon {
 	private int studentNummer;
 	private String groepId;
 	private double aanwezigheid;
-
+	private boolean ziek =false;
 	public Student(
 		String pVoornaam, 
 		String pTussenvoegsel, 
@@ -49,5 +49,9 @@ public class Student extends Persoon {
 	private void setStudentNummer(int pStudentNummer) {
 		this.studentNummer = pStudentNummer;
 	}
+	public boolean getZiek(){
+		return ziek;}
+	public void setZiek(boolean zk){
+		ziek = zk;}
 	
 }
