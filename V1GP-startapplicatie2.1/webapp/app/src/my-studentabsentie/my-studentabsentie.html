@@ -44,6 +44,9 @@
       .studentenTable{
       	margin-left:20px;
       }
+      .absentieTable{
+        display:inline-table;
+      }
     </style>
 
     <paper-toast
@@ -55,18 +58,26 @@
 
     <div class="my-title">Mijn Absentielijst</div>
     <table class="studentenTable">
-      <tr>
-        <th class="voornaam">Voornaam </th>
-        <th class="achternaam">Achternaam </th>
-        <th class="aanwezigheid">Aanwezigheid</th>
-      </tr>
       <template is="dom-repeat" items="[[_c_studenten]]">
         <tr>
-          <td class="voornaam">  <a href$="#/student/details/[[item.firstName]]-[[item.lastName]]">[[item.firstName]]</a></td>
-          <td class="achternaam"><a href$="#/student/details/[[item.firstName]]-[[item.lastName]]">[[item.lastName]] </a></td>
-          <td class="aanwezigheid">[[item.presence]]%</td>
+          <th class="voornaam">Leerlingnummer </th>
+          <td class="input">[[item.id]]</td>
+        </tr>
+        <tr>
+          <th class="voornaam">Voornaam </th>
+          <td class="input">[[item.firstName]]</td>
+        </tr>
+        <tr>
+          <th class="achternaam">Achternaam </th>
+          <td class="input">[[item.lastName]]</td>
+        </tr>
+        <tr>
+          <th class="aanwezigheid">Aanwezigheid</th>
+          <td class="input">[[item.presence]]%</td>
         </tr>
       </template>
+      </table>
+      <table class="absentieTable">
       <tr>
       	<th class="voornaam"><h2>Absentie meldingen</h2></th>
       </tr>
@@ -81,6 +92,23 @@
       <tr>
       	<td class="voornaam">OODC </td>
         <td class="achternaam">23-03-2017 </td>
+      </tr>
+    </table>
+    <table class="absentieTable">
+      <tr>
+      	<th class="voornaam"><h2>Ziek meldingen</h2></th>
+      </tr>
+      <tr>
+      	<th class="voornaam">Vak </th>
+        <th class="achternaam">Datum </th>
+      </tr>
+      <tr>
+      	<td class="voornaam">OODC </td>
+        <td class="achternaam">01-04-2017 </td>
+      </tr>
+      <tr>
+      	<td class="voornaam">OODC </td>
+        <td class="achternaam">19-03-2017 </td>
       </tr>
     </table>
 
@@ -136,8 +164,15 @@
         
         _initializing : function() { 
           if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
-  			
-            if (this.c_rol=="student") {                        // voor studenten
+        	  console.log("Dit is de eerste; " + this.c_username);
+        	  var getUrl = window.location.href;
+              var getPostValue = getUrl.split("/").pop();
+              var newUsername = getPostValue.toLowerCase();
+              if(getPostValue != "studentabsentie"){
+    				this.c_username = newUsername;
+              }
+              console.log("Dit is de tweede; " + this.c_username);
+            if (this.c_rol=="student" || this.c_rol=="docent") {                        // voor studenten
               this._studentabsentie_ophalen_request_handler();    //    haal info op van server
             } else {                                            // na handmatige url wijziging zonder login
               var lToast = this.$.toast_invalid_aanroep;        // meldt ongeldige aanroep
