@@ -15,4 +15,13 @@ public class Absentie {
 		isZiek=stu.getZiek();
 		les = ls;
 	}
+	public boolean getZiek(){
+		return isZiek;
+	}
+	public boolean getAbsentie(){
+		return isAbsent;
+	}
+	public Student getStudent(){
+		return leerling;
+	}
 }
