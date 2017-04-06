@@ -132,6 +132,29 @@ public class PrIS {
 		return lGevondenKlas;
 	}
 	
+	public Student zoekStudent(String nm) {
+		// used
+		Student lGevondenStudent = null;
+		for (Student lStudent : deStudenten) {
+			if (lStudent.getGebruikersnaam().contains(nm)) {
+				lGevondenStudent = lStudent;
+				break;
+			}
+		}
+		return lGevondenStudent;
+	}
+	
+	public ArrayList<Student> zoekStudenten(String nm) {
+		// used
+		ArrayList<Student> gevondenStudenten = new ArrayList<Student>();	
+		for (Student lStudent : deStudenten) {
+			if (lStudent.getGebruikersnaam().contains(nm)) {
+				gevondenStudenten.add(lStudent);
+			}
+		}
+		return gevondenStudenten;
+	}
+	
 	public Student getStudent(String pGebruikersnaam) {
 		// used
 		Student lGevondenStudent = null;

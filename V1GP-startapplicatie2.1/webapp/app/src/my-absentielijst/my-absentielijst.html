@@ -78,7 +78,14 @@
         <td><a class="klasButton" href="#/docent/absentielijst/V1F">V1F </a></td>
       </tr>
     </table>
+    <div id="search" show$="{{show}}" on-click="toggleSearch">
+        <paper-icon-button icon="search"></paper-icon-button>
+        <input is="iron-input" bind-value="{{searchInput}}" type="search" id="input" on-keyup="onKeyPress" autocomplete="off">
+     </div>
     <table class="studentenTable">
+      <tr>
+      	<td colspan="3"><span class="klasTitle">{{c_info}}</span></td>
+      </tr>
       <tr>
         <th class="voornaam">Voornaam </th>
         <th class="achternaam">Achternaam </th>
@@ -129,13 +136,41 @@
           c_klas: {
               type: String,
             },
+          searchInput: {
+              type: String,
+              value: "",
+          },
+          c_info:{
+        	  type: String,
+          },
           c_visible: {
             type: Boolean,                                      /* true when element is the active visible item */
             value: false,
-            observer: '_initializing',                          /* wordt ook aangeroepen bijwisseling van true naar false.
-                                                                   regel in de functie dat er niets gebeurd
-                                                                   als c_visible false is */
+            observer: '_initializing',                          
           },
+        },
+        toggleSearch: function(e) {
+            if (e) { // comes first
+                e.stopPropagation();
+            }
+            if (e.target === this.$.input) {
+                return;
+            }
+            this.show = !this.show;
+            this.async(function() {
+                this.$.input.focus();
+            });
+        },
+        onKeyPress: function(e) {
+            if (e.keyCode == 13) { // Enter
+                var q = this.searchInput;
+                this.c_klas = "";
+                this.c_username = q;
+                window.location.href = "#/docent/absentielijst/"+q;
+                this.show = false;
+                this.searchInput = '';
+                this.c_info = "U heeft gezocht op: " + q;
+            }
         },
         
         _go_home: function() {
@@ -149,9 +184,11 @@
         _initializing : function() {
           if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
         	var getUrl = window.location.href;
-            var getClickedKlas = getUrl.split("/").pop();
-  			this.c_klas = getClickedKlas;
-  			
+            var getPostValue = getUrl.split("/").pop();
+            if(getPostValue != "absentielijst"){
+  				this.c_klas = getPostValue;
+  				this.c_info = "U kijkt nu naar klas: " + this.c_klas;
+            }
             if (this.c_rol=="docent") {                        // voor studenten
               this._absentielijst_ophalen_request_handler();    //    haal info op van server
             } else {                                            // na handmatige url wijziging zonder login
@@ -166,13 +203,20 @@
           console.log("_absentielijst_ophalen_request_handler klas="+this.c_klas);
           this.$.ajax_absentielijst_ophalen.contentType="application/json";
           this.$.ajax_absentielijst_ophalen.body={
-            "klas":this.c_klas
+            "klas":this.c_klas,
+            "username":this.c_username
           };
           this.$.ajax_absentielijst_ophalen.generateRequest();
         },
 
         _absentielijst_ophalen_response_handler: function(request) {
-          console.log("_absentielijst_ophalen_response_handler aantal studenten="+request.detail.response.length);
+          if(request.detail.response != null){
+        	  this.c_info += " met " + request.detail.response.length + " leerlingen.";
+          } else if(this.c_info == ""){
+        	  this.c_info = "Kies een klas of zoek naar een leerling.";
+          }else{
+        	  this.c_info += " met 0 leerlingen.";
+          }
           this._c_studenten = request.detail.response;
         },
 
