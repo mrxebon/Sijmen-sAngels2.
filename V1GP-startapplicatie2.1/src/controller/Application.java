@@ -51,6 +51,7 @@ public class Application {
   	server.registerHandler("/student/studentabsentie", absentielijstController);
   	server.registerHandler("/docent/absentienoteren", absentienoterenController);
   	server.registerHandler("/docent/absentienoteren/ophalen", absentienoterenController);
+  	server.registerHandler("/docent/absentienoteren/lessen", absentienoterenController);
   	server.registerHandler("/docent/studentdetails/ophalen", absentielijstController);
   	server.registerHandler("/docent/studentdetails", absentielijstController);
 		

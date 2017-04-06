@@ -4,6 +4,9 @@
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 
 <dom-module id="my-absentienoteren">
   <template>
@@ -67,6 +70,9 @@
         margin-left:20px;
       }
       .studentenTable tr:nth-child(even) {background-color: #f2f2f2}
+      paper-dropdown-menu, paper-listbox {
+        width: 250px;
+      }
     </style>
 
     <paper-toast
@@ -77,16 +83,13 @@
     </paper-toast>
 
     <div class="my-title">Absentie noteren</div>
-    <table>
-      <tr>
-        <td><a class="klasButton" href="#/docent/absentienoteren/V1A">V1A </a></td>
-        <td><a class="klasButton" href="#/docent/absentienoteren/V1B">V1B </a></td>
-        <td><a class="klasButton" href="#/docent/absentienoteren/V1C">V1C </a></td>
-        <td><a class="klasButton" href="#/docent/absentienoteren/V1D">V1D </a></td>
-        <td><a class="klasButton" href="#/docent/absentienoteren/V1E">V1E </a></td>
-        <td><a class="klasButton" href="#/docent/absentienoteren/V1F">V1F </a></td>
-        </tr>
-     </table> 
+    <paper-dropdown-menu label="Les">
+      <paper-listbox class="dropdown-content" selected="">
+        <template is="dom-repeat" items="[[_c_lessen]]">
+          <paper-item><a href="#/docent/absentienoteren/[[item.klas]]">[[item.klas]] [[item.datum]] [[item.begintijd]]</a></paper-item>
+        </template>
+      </paper-listbox>
+    </paper-dropdown-menu>
       <table class="studentenTable">
       <tr>
         <th class="voornaam">Voornaam </th>
@@ -108,7 +111,7 @@
     </table>
     <paper-button
       class="my-button"
-      on-click="_medestudenten_opslaan_request_handler">Opslaan
+      on-click="">Opslaan
     </paper-button>
 
     <iron-ajax
@@ -117,6 +120,14 @@
       url="/docent/absentienoteren/ophalen"
       handle-as="json"
       on-response="_absentielijst_ophalen_response_handler">
+    </iron-ajax>
+
+    <iron-ajax
+      id="ajax_lessen_ophalen"
+      method="POST"
+      url="/docent/absentienoteren/lessen"
+      handle-as="json"
+      on_response="_lessen_ophalen_response_handler">
     </iron-ajax>
 
   </template>
@@ -137,7 +148,14 @@
             type: Array,           /* array<student-info>: student-info = {id, firstName, lastName, sameGroup} 
                     array is constant groepnr is changable */
           },
+          _c_lessen: {
+            type: Array,           /* array<student-info>: student-info = {id, firstName, lastName, sameGroup} 
+                    array is constant groepnr is changable */
+          },
           c_rol: {
+            type: String,
+          },
+          c_datum: {
             type: String,
           },
           c_username: {
@@ -170,7 +188,8 @@
         this.c_klas = getClickedKlas;
         
             if (this.c_rol=="docent") {                        // voor studenten
-              this._absentielijst_ophalen_request_handler();    //    haal info op van server
+              this._absentielijst_ophalen_request_handler();
+              this._lessen_ophalen_response_handler();    //    haal info op van server
             } else {                                            // na handmatige url wijziging zonder login
               var lToast = this.$.toast_invalid_aanroep;        // meldt ongeldige aanroep
               lToast.open();                                    /* het sluiten van deze error verwijst  */
@@ -191,6 +210,20 @@
         _absentielijst_ophalen_response_handler: function(request) {
           console.log("_absentielijst_ophalen_response_handler aantal studenten="+request.detail.response.length);
           this._c_studenten = request.detail.response;
+        },
+
+        _lessen_ophalen_request_handler: function() {
+          console.log("_lessen_ophalen_request_handler datum="+this.c_datum);
+          this.$.ajax_lessen_ophalen.contentType="application/json";
+          this.$.ajax_lessen_ophalen.body={
+            "datum":this.c_datum
+          };
+          this.$.ajax_lessen_ophalen.generateRequest();
+        },
+
+        _lessen_ophalen_response_handler: function(request) {
+          console.log("_lessen_ophalen_response_handler aantal lessen="+request.detail.response.length);
+          this._c_lessen = request.detail.response;
         },
 
        _toast_clicked: function(e) {

@@ -253,10 +253,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     element$="my-absentienoteren">
             <paper-material elevation="1">
               <my-absentienoteren
+                c_datum="{{_systeemdatumlokaal}}"
                 c_visible="[[_are_strings_equal(_ar_page, 'docent_absentienoteren')]]"
                 c_rol="[[_rol]]"
                 c_username="[[_username]]"
-                c_klas="">
+                c_klas="[[_ar_subsubroute_data.subsubpage]]">
               </my-absentienoteren>
             </paper-material>
           </section>

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import model.klas.Klas;
 import model.persoon.Docent;
 import model.persoon.Student;
+import model.rooster.Les;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -20,6 +21,8 @@ public class PrIS {
 	private ArrayList<Docent> deDocenten;
 	private ArrayList<Student> deStudenten;
 	private ArrayList<Klas> deKlassen;
+	private ArrayList<Les> deLessen;
+	private ArrayList<Les> deLessenVanVandaag = new ArrayList<Les>();
 	
 	/**
 	 * De constructor maakt een set met standaard-data aan. Deze data
@@ -108,6 +111,17 @@ public class PrIS {
 		}
 		
 		return resultaat;
+	}
+	
+	public ArrayList<Les> getLessenVanDatum(String datum) {
+		deLessenVanVandaag.clear();
+		
+		for (Les les : deLessen) {
+			if (datum == les.getDatum()) {
+				deLessenVanVandaag.add(les);
+			}
+		}
+		return deLessenVanVandaag;
 	}
 	
 	public Klas getKlasVanStudent(Student pStudent) {
@@ -240,6 +254,46 @@ public class PrIS {
 		}
 	}
 
+	private void vulLessen(ArrayList<Les> pLes){
+		String csvFile = "././CSV/rooster.csv";
+		BufferedReader br = null;
+		String line = "";
+		String cvsSplitBy = ",";
+		
+		
+		try {
+			
+			br = new BufferedReader(new FileReader(csvFile));
+			while ((line = br.readLine()) != null) {
+	
+			        // use comma as separator
+				String[] element = line.split(cvsSplitBy);
+				String datum = element[0];
+				String begintijd = element[1];
+				String eindtijd = element[2];
+				String vak = element[3];
+				String docent = element[4];
+				String lokaal = element[5];
+				String klas = element[6];
+				Les l1 = new Les(datum, begintijd, eindtijd, vak, docent, lokaal, klas);
+				pLes.add(l1);
+			}
+	
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
 	private void vulKlassen(ArrayList<Klas> pKlassen) {
 		//TICT-SIE-VIA is de klascode die ook in de rooster file voorkomt
 		//V1A is de naam van de klas die ook als file naam voor de studenten van die klas wordt gebruikt
