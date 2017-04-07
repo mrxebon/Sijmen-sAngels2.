@@ -183,13 +183,14 @@
         
         _initializing : function() {
           if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
-          var getUrl = window.location.href;
+          	var getUrl = window.location.href;
             var getClickedKlas = getUrl.split("/").pop();
-        this.c_klas = getClickedKlas;
+         	if(getClickedKlas != "absentienoteren"){ this.c_klas = getClickedKlas; }
+         	else{ this.c_klas = "none"; }
         
-            if (this.c_rol=="docent") {                        // voor studenten
-              this._absentielijst_ophalen_request_handler();
-              this._lessen_ophalen_response_handler();    //    haal info op van server
+            if (this.c_rol=="docent") {                        
+            	this._lessen_ophalen_request_handler();
+            	if(this.c_klas != "none"){ this._absentielijst_ophalen_request_handler(); }
             } else {                                            // na handmatige url wijziging zonder login
               var lToast = this.$.toast_invalid_aanroep;        // meldt ongeldige aanroep
               lToast.open();                                    /* het sluiten van deze error verwijst  */

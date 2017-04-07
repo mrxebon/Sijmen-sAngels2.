@@ -24,10 +24,8 @@ public class AbsentieNoterenController implements Handler {
 
 	public void handle(Conversation conversation) {
 		if (conversation.getRequestedURI().startsWith("/docent/absentienoteren/lessen")) {
-			System.out.println("test0");
 			lessenOphalen(conversation);
 		} else if (conversation.getRequestedURI().startsWith("/docent/absentienoteren/ophalen")) {
-			System.out.println("test 1");
 			ophalen(conversation);
 		}
 	}
@@ -59,17 +57,12 @@ public class AbsentieNoterenController implements Handler {
 	}
 	
 	private void lessenOphalen(Conversation conversation) {
-		System.out.println("test 2");
 		JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
 		String datum = lJsonObjectIn.getString("datum");
-		System.out.println("datum:"+datum);
 		ArrayList<Les> lessenVanVandaag = informatieSysteem.getLessenVanDatum(datum);
-		
 		JsonArrayBuilder lJsonArrayBuilder = Json.createArrayBuilder();
-		
-		for (Les les : lessenVanVandaag) {									        // loop door de studenten
-			
-			JsonObjectBuilder lJsonObjectBuilderVoorLessen = Json.createObjectBuilder(); // maak het JsonObject voor een student
+		for (Les les : lessenVanVandaag) {							
+			JsonObjectBuilder lJsonObjectBuilderVoorLessen = Json.createObjectBuilder(); 
 			lJsonObjectBuilderVoorLessen
 				.add("vak", les.getVak())
 				.add("begintijd", les.getBegintijd())
@@ -77,11 +70,9 @@ public class AbsentieNoterenController implements Handler {
 				.add("docent", les.getDocent())
 				.add("lokaal", les.getLokaal())
 				.add("klas", les.getKlas());
-		  lJsonArrayBuilder.add(lJsonObjectBuilderVoorLessen);													//voeg het JsonObject aan de array toe				     
-		
+		    lJsonArrayBuilder.add(lJsonObjectBuilderVoorLessen);													//voeg het JsonObject aan de array toe				     
 		}
 		String lJsonOutStr = lJsonArrayBuilder.build().toString();												// maak er een string van
-		conversation.sendJSONMessage(lJsonOutStr);	
-		System.out.println("test 3");
+		conversation.sendJSONMessage(lJsonOutStr);
 	}
 }

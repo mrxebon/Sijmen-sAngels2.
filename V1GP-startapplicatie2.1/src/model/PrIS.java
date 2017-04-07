@@ -51,6 +51,7 @@ public class PrIS {
 		deDocenten = new ArrayList<Docent>();
 		deStudenten = new ArrayList<Student>();
 		deKlassen = new ArrayList<Klas>();
+		deLessen = new ArrayList<Les>();
 
 		// Inladen klassen
 		vulKlassen(deKlassen);
@@ -60,6 +61,8 @@ public class PrIS {
 
 		// Inladen docenten
 		vulDocenten(deDocenten);
+		
+		vulLessen(deLessen);
 	
 	} //Einde Pris constructor
 	
@@ -115,7 +118,6 @@ public class PrIS {
 	
 	public ArrayList<Les> getLessenVanDatum(String datum) {
 		deLessenVanVandaag.clear();
-		
 		for (Les les : deLessen) {
 			if (datum == les.getDatum()) {
 				deLessenVanVandaag.add(les);
