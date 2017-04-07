@@ -8,12 +8,12 @@ public class Absentie {
 	private Student leerling;
 	private boolean isAbsent, isZiek;
 
-	public Absentie(boolean absent, boolean ziek, Student stu, les ls) {
+	public Absentie(boolean absent, boolean ziek, Student stu, Les ls) {
 		isAbsent = absent;
 		ziek = isZiek;
 		leerling = stu;
 		isZiek=stu.getZiek();
-		les = ls;
+		deLes = ls;
 	}
 	public boolean getZiek(){
 		return isZiek;
