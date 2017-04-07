@@ -54,7 +54,7 @@
         margin-left: 0px;                   /* reduce the default */
       }
       .klasButton{
-        display:block;  
+        display:block;
         width: 115px;
         height: 25px;
         background: #1A9FD9;
@@ -145,11 +145,11 @@
 
         properties: {
           _c_studenten: {
-            type: Array,           /* array<student-info>: student-info = {id, firstName, lastName, sameGroup} 
+            type: Array,           /* array<student-info>: student-info = {id, firstName, lastName, sameGroup}
                     array is constant groepnr is changable */
           },
           _c_lessen: {
-            type: Array,           /* array<student-info>: student-info = {id, firstName, lastName, sameGroup} 
+            type: Array,           /* array<student-info>: student-info = {id, firstName, lastName, sameGroup}
                     array is constant groepnr is changable */
           },
           c_rol: {
@@ -172,7 +172,7 @@
                                                                    als c_visible false is */
           },
         },
-        
+
         _go_home: function() {
           var lApp = document.querySelector('my-app');  //het polymer element <my-app>
           var lAppRouter = lApp.$.approuter;            // het html-element <app-route> met id=approuter
@@ -180,15 +180,15 @@
                                                         // door de two way binding in <app-route> en <app-location>
                                                         // zal ook de url echt wijzigen
         },
-        
+
         _initializing : function() {
           if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
           	var getUrl = window.location.href;
             var getClickedKlas = getUrl.split("/").pop();
          	if(getClickedKlas != "absentienoteren"){ this.c_klas = getClickedKlas; }
          	else{ this.c_klas = "none"; }
-        
-            if (this.c_rol=="docent") {                        
+
+            if (this.c_rol=="docent") {
             	this._lessen_ophalen_request_handler();
             	if(this.c_klas != "none"){ this._absentielijst_ophalen_request_handler(); }
             } else {                                            // na handmatige url wijziging zonder login

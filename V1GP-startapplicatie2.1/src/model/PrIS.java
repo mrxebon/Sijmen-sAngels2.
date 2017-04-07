@@ -279,6 +279,13 @@ public class PrIS {
 				String klas = element[6];
 				Les l1 = new Les(datum, begintijd, eindtijd, vak, docent, lokaal, klas);
 				pLes.add(l1);
+				System.out.println(l1.getObjectKlas());
+				for(Klas k: deKlassen){
+					if (k.getKlasCode().equals(klas)){
+						l1.setObjectKlas(k);
+					}
+				}
+				System.out.println(l1.getObjectKlas());
 			}
 	
 		} catch (FileNotFoundException e) {
