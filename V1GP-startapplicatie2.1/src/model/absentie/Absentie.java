@@ -8,12 +8,13 @@ public class Absentie {
 	private Student leerling;
 	private boolean isAbsent, isZiek;
 
-	public Absentie(boolean absent, boolean ziek, Student stu, Les ls) {
-		isAbsent = absent;
-		ziek = isZiek;
-		leerling = stu;
-		isZiek=stu.getZiek();
-		deLes = ls;
+	public Absentie(boolean absent,Student stu, Les ls) {
+		isAbsent= absent;
+		leerling=stu;
+		if(absent==false && leerling.getZiek()==true){
+			leerling.setZiek(false);
+		}
+		isZiek=leerling.getZiek();
 	}
 	public boolean getZiek(){
 		return isZiek;
