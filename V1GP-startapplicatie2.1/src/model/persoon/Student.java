@@ -51,6 +51,7 @@ public class Student extends Persoon {
 	}
 	public boolean getZiek(){
 		return ziek;}
+	
 	public void setZiek(boolean zk){
 		ziek = zk;}
 	
