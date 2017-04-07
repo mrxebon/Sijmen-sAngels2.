@@ -44,4 +44,10 @@ public class Les {
 	public String getKlas() {
 		return klas;
 	}
+	public Klas getObjectKlas() {
+		return Klas1;
+	}
+	public void setObjectKlas(Klas k){
+		Klas1=k;
+	}
 }
