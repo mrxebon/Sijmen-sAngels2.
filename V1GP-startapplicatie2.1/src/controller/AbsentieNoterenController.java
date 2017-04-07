@@ -27,10 +27,8 @@ public class AbsentieNoterenController implements Handler {
 
 	public void handle(Conversation conversation) {
 		if (conversation.getRequestedURI().startsWith("/docent/absentienoteren/lessen")) {
-			System.out.println("test0");
 			lessenOphalen(conversation);
 		} else if (conversation.getRequestedURI().startsWith("/docent/absentienoteren/ophalen")) {
-			System.out.println("test 1");
 			ophalen(conversation);
 		}
 	}
@@ -38,27 +36,22 @@ public class AbsentieNoterenController implements Handler {
 	private void ophalen(Conversation conversation) {
 		JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
 		String klasnaam = ((klasnaam = lJsonObjectIn.getString("klas")) != null) ? klasnaam : "V1B"; //als er geen klas is aangeklikt gebruik V1B
-		Klas lKlas = informatieSysteem.getKlas(klasnaam);		// Zet de klas
-
-    ArrayList<Student> lStudentenVanKlas = lKlas.getStudenten();	// Studenten van klas pakken
-		
-		JsonArrayBuilder lJsonArrayBuilder = Json.createArrayBuilder();						// Maak array voor return
-		
-		for (Student lMedeStudent : lStudentenVanKlas) {									        // loop door de studenten
-				
-				JsonObjectBuilder lJsonObjectBuilderVoorStudent = Json.createObjectBuilder(); // maak het JsonObject voor een student
+		Klas lKlas = informatieSysteem.getKlas(klasnaam);	
+    ArrayList<Student> lStudentenVanKlas = lKlas.getStudenten();
+		JsonArrayBuilder lJsonArrayBuilder = Json.createArrayBuilder();
+		for (Student lMedeStudent : lStudentenVanKlas) {
+				JsonObjectBuilder lJsonObjectBuilderVoorStudent = Json.createObjectBuilder();
 				String lLastName = lMedeStudent.getVolledigeAchternaam();
 				lJsonObjectBuilderVoorStudent
-					.add("id", lMedeStudent.getStudentNummer())																	//vul het JsonObject		     
+					.add("id", lMedeStudent.getStudentNummer())	
 					.add("firstName", lMedeStudent.getVoornaam())	
 					.add("lastName", lLastName)				 
 				  .add("presence", lMedeStudent.getAanwezigheid());					     
 			  
-			  lJsonArrayBuilder.add(lJsonObjectBuilderVoorStudent);													//voeg het JsonObject aan de array toe				     
-			
+			  lJsonArrayBuilder.add(lJsonObjectBuilderVoorStudent);		
 		}
-    String lJsonOutStr = lJsonArrayBuilder.build().toString();												// maak er een string van
-		conversation.sendJSONMessage(lJsonOutStr);																				// string gaat terug naar de Polymer-GUI!
+    String lJsonOutStr = lJsonArrayBuilder.build().toString();
+		conversation.sendJSONMessage(lJsonOutStr);	
 	}
 	
 	private void lessenOphalen(Conversation conversation) {
@@ -70,15 +63,11 @@ public class AbsentieNoterenController implements Handler {
 		try {
 			Date date = format1.parse(datum);
 			newdate = format2.format(date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		} catch (ParseException e) { e.printStackTrace(); }
 		ArrayList<Les> lessenVanVandaag = informatieSysteem.getLessenVanDatum(newdate);
 		JsonArrayBuilder lJsonArrayBuilder = Json.createArrayBuilder();
-		
-		for (Les les : lessenVanVandaag) {									        // loop door de studenten
-			
-			JsonObjectBuilder lJsonObjectBuilderVoorLessen = Json.createObjectBuilder(); // maak het JsonObject voor een student
+		for (Les les : lessenVanVandaag) {	
+			JsonObjectBuilder lJsonObjectBuilderVoorLessen = Json.createObjectBuilder();
 			lJsonObjectBuilderVoorLessen
 				.add("vak", les.getVak())
 				.add("begintijd", les.getBegintijd())
@@ -86,11 +75,9 @@ public class AbsentieNoterenController implements Handler {
 				.add("docent", les.getDocent())
 				.add("lokaal", les.getLokaal())
 				.add("klas", les.getKlas());
-		  lJsonArrayBuilder.add(lJsonObjectBuilderVoorLessen);													//voeg het JsonObject aan de array toe				     
-		
+		  lJsonArrayBuilder.add(lJsonObjectBuilderVoorLessen);
 		}
-		String lJsonOutStr = lJsonArrayBuilder.build().toString();	
+		String lJsonOutStr = lJsonArrayBuilder.build().toString();
 		conversation.sendJSONMessage(lJsonOutStr);	
-
 	}
 }
