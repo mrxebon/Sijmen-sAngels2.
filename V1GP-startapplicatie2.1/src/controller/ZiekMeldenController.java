@@ -9,10 +9,10 @@ import server.Conversation;
 import server.Handler;
 
 public class ZiekMeldenController implements Handler {
-	private boolean isZiek = false;
+	private PrIS informatieSysteem;
 	
 	public ZiekMeldenController(PrIS infoSys) {
-		
+		informatieSysteem = infoSys;
 	}
 
 	public void handle(Conversation conversation) {
@@ -24,7 +24,9 @@ public class ZiekMeldenController implements Handler {
   private void verzendZiekte(Conversation conversation) {
   	JsonObject JsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
 		String studentGebruikersnaam = JsonObjectIn.getString("username");
-		//isZiek = student.get(studentGebruikersnaam).getZiek()		- Haal van de student met de username op of deze ziek (true) of niet (false) is. (methode moet nog geaakt worden)
+		boolean isZiek = informatieSysteem.getStudent(studentGebruikersnaam).getZiek();
+		isZiek =! isZiek;		
+		informatieSysteem.getStudent(studentGebruikersnaam).setZiek(isZiek);
 		
   	JsonObjectBuilder JsonObjectBuilder = Json.createObjectBuilder();
   	if(isZiek)
