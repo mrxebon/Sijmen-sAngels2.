@@ -14,7 +14,7 @@ public class Absentie {
 		isAbsent= absent;
 		deLes=ls;
 		leerling=stu;
-		eigenKlas= deLes.getKlas();
+		eigenKlas= deLes.getObjectKlas();
 		if(absent==false && leerling.getZiek()==true){
 			leerling.setZiek(false);
 		}
