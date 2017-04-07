@@ -1,5 +1,6 @@
 package model.rooster;
 
+import model.klas.Klas;
 public class Les {
 	private String datum;
 	private String begintijd;
@@ -8,6 +9,7 @@ public class Les {
 	private String docent;
 	private String lokaal;
 	private String klas;
+	private Klas Klas1;
 	
 	public Les(String datum, String begintijd, String eindtijd, String vak, String docent, String lokaal, String klas) {
 		this.datum = datum;
