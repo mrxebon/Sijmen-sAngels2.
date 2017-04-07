@@ -119,7 +119,9 @@ public class PrIS {
 	public ArrayList<Les> getLessenVanDatum(String datum) {
 		deLessenVanVandaag.clear();
 		for (Les les : deLessen) {
-			if (datum == les.getDatum()) {
+			System.out.println("datum:" + datum + "datum les:" + les.getDatum());
+			if (datum.equals(les.getDatum())) {
+				System.out.println("is gelijk");
 				deLessenVanVandaag.add(les);
 			}
 		}
