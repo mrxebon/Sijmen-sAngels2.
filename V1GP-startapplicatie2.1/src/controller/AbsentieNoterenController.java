@@ -93,9 +93,10 @@ public class AbsentieNoterenController implements Handler {
 		JsonArray studenten = lJsonObjectIn.getJsonArray("studenten");
 		String datum = lJsonObjectIn.getString("datum");
 		String vak = lJsonObjectIn.getString("vak");
-		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat format2 = new SimpleDateFormat("d-M-yyyy");
+		SimpleDateFormat format1 = new SimpleDateFormat("d-M-yyyy");
+		SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
 		String newdate = null;
+		
 		try {
 			Date date = format1.parse(datum);
 			newdate = format2.format(date);
@@ -105,7 +106,9 @@ public class AbsentieNoterenController implements Handler {
 				JsonObject lGroepMember_jsonObj = studenten.getJsonObject(i );
 				boolean absent = lGroepMember_jsonObj.getBoolean("absent");
 				int studentNummer = lGroepMember_jsonObj.getInt("id");
+				System.out.println("date:"+newdate);
 				informatieSysteem.addabsentie(newdate, studentNummer, vak, klas, absent);
+
 			}
 		}
 		
