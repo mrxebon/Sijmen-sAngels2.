@@ -17,13 +17,19 @@
       <br>
     </div>
     <div class="button-input">
-      <paper-button raised on-click="_is_ziek_request_handler">[[c_is_ziek_knop_text]]</paper-button>
+      <paper-button raised on-click="_is_ziek_toggle_handler">[[c_is_ziek_knop_text]]</paper-button>
     </div>
 
     <iron-ajax
       id="ajax_ziekteupdated"
       method="POST"
       url="/student/ziekmelden/ziekteupdated"
+      handle-as="json"  >
+    </iron-ajax>
+    <iron-ajax
+      id="ajax_ziekterequest"
+      method="POST"
+      url="/student/ziekmelden/ziekterequest"
       handle-as="json"
       on-response="_is_ziek_response_handler">
     </iron-ajax>
@@ -42,7 +48,7 @@
           c_visible: {
             type: Boolean,
             value: false,
-            observer: '_is_ziek_request_handler',
+            observer: '_initialize',
           },
           c_username: {    
             type: String,
@@ -57,16 +63,31 @@
           },
         },
 
+        _initialize : function() { 
+          if (this.c_visible) {
+            this._is_ziek_request_handler();
+          }
+        },
+
         _is_ziek_request_handler : function() {
+          this.$.ajax_ziekterequest.contentType="application/json";
+          this.$.ajax_ziekterequest.body = {
+            "username": this.c_username
+          };
+          this.$.ajax_ziekterequest.generateRequest();
+        },
+
+        _is_ziek_toggle_handler : function() {
           this.$.ajax_ziekteupdated.contentType="application/json";
           this.$.ajax_ziekteupdated.body = {
             "username": this.c_username
           };
           this.$.ajax_ziekteupdated.generateRequest();
+          this._is_ziek_request_handler();
         },
 
         _is_ziek_response_handler: function(request) {
-          this.c_is_ziek = request.detail.response.is_ziek;
+          this.c_is_ziek = request.detail.response.ziek;
           if(this.c_is_ziek == "wel") {
             this.c_is_ziek_knop_text = "Beter melden";
           }

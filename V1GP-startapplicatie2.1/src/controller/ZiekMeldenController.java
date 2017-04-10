@@ -17,24 +17,33 @@ public class ZiekMeldenController implements Handler {
 
 	public void handle(Conversation conversation) {
 	  if(conversation.getRequestedURI().startsWith("/student/ziekmelden/ziekteupdated")) {
+	  	toggleZiekte(conversation);
+	  }
+	  else if(conversation.getRequestedURI().startsWith("/student/ziekmelden/ziekterequest")) {
 	  	verzendZiekte(conversation);
 	  }
 	}
   
-  private void verzendZiekte(Conversation conversation) {
+	private void verzendZiekte(Conversation conversation) {
+  	JsonObject JsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
+		String studentGebruikersnaam = JsonObjectIn.getString("username");
+		boolean isZiek = informatieSysteem.getStudent(studentGebruikersnaam).getZiek();
+		
+  	JsonObjectBuilder JsonObjectBuilder = Json.createObjectBuilder();
+  	if(isZiek)
+  		JsonObjectBuilder.add("ziek", "wel");
+  	else
+  		JsonObjectBuilder.add("ziek", "niet");
+		String lJsonOut = JsonObjectBuilder.build().toString();
+		
+		conversation.sendJSONMessage(lJsonOut);
+  }
+	
+  private void toggleZiekte(Conversation conversation) {
   	JsonObject JsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
 		String studentGebruikersnaam = JsonObjectIn.getString("username");
 		boolean isZiek = informatieSysteem.getStudent(studentGebruikersnaam).getZiek();
 		isZiek =! isZiek;		
 		informatieSysteem.getStudent(studentGebruikersnaam).setZiek(isZiek);
-		
-  	JsonObjectBuilder JsonObjectBuilder = Json.createObjectBuilder();
-  	if(isZiek)
-  		JsonObjectBuilder.add("is_ziek", "wel");
-  	else
-  		JsonObjectBuilder.add("is_ziek",  "niet");
-		String lJsonOut = JsonObjectBuilder.build().toString();
-		
-		conversation.sendJSONMessage(lJsonOut);
   }
 }
