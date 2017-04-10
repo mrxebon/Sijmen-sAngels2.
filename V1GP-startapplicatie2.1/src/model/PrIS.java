@@ -302,10 +302,14 @@ public class PrIS {
 		Les les1 = null;
 		Student student1 = null;
 		for (Les les : deLessen) {
-			if (les.getDatum() == datum && les.getKlas() == klasCode && les.getVak() == vakNaam) {
+
+			if (les.getObjectKlas().getNaam().equals(klasCode)&& les.getVak().equals(vakNaam) && les.getDatum().equals(datum)) {
+				System.out.println("hello");
 				les1 = les;
-				System.out.println("student1 is" + les1);
+				
 			}
+		}
+		System.out.println("post");
 			for (Student student : deStudenten) {
 				if (student.getStudentNummer() == studentNummer) {
 					student1 = student;
@@ -315,7 +319,7 @@ public class PrIS {
 			}
 			Absentie a1 = new Absentie(absent, student1, les1);
 			deAbsenties.add(a1);
-		}
+		
 	}
 
 	// hier komen de vul de lijst functies
