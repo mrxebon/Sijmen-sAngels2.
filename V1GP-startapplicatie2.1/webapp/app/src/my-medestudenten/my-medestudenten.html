@@ -178,7 +178,8 @@
         },
 
         _medestudenten_opslaan_request_handler: function() {
-          console.log("_medestudenten_opslaan_request_handler user="+this.c_username);
+          console.log("test user="+this.c_username);
+          console.log("_medestudenten_opslaan_request_handler tetsing="+this._c_studenten);
           this.$.ajax_medestudenten_opslaan.contentType="application/json";
           this.$.ajax_medestudenten_opslaan.body={
               "username":this.c_username,

@@ -73,6 +73,12 @@
       paper-dropdown-menu, paper-listbox {
         width: 250px;
       }
+      .dropdown-content {
+        width: 400px;
+      }
+      .dropdown-menu {
+        width: 300px
+      }
     </style>
 
     <paper-toast
@@ -82,11 +88,11 @@
         <paper-button on-click="_toast_clicked" class="toast-button">Sluiten</paper-button>
     </paper-toast>
 
-    <div class="my-title">Absentie noteren</div>
-    <paper-dropdown-menu label="Les">
-      <paper-listbox class="dropdown-content" selected="">
+    <div class="my-title">Absentie noteren </div>
+    <paper-dropdown-menu class="dropdown-menu" label="Les">
+      <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectedValue}}">
         <template is="dom-repeat" items="[[_c_lessen]]">
-          <paper-item><a href="#/docent/absentienoteren/[[item.klas]]">[[item.klas]] [[item.begintijd]] [[item.eindtijd]]</a></paper-item>
+          <paper-item value="[[item.vak]]"><a href="#/docent/absentienoteren/[[item.klas]]">[[item.docent]] [[item.vak]] [[item.klas]] [[item.begintijd]] [[item.eindtijd]]</a></paper-item>
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
@@ -103,7 +109,7 @@
           <td class="absent">
             <paper-checkbox
               class="my-check"
-              >
+              checked="{{item.sameGroup}}">
             </paper-checkbox>
           </td>
         </tr>
@@ -111,7 +117,8 @@
     </table>
     <paper-button
       class="my-button"
-      on-click="">Opslaan
+      on-click="_absentielijst_opslaan_request_handler"
+      >Opslaan
     </paper-button>
 
     <iron-ajax
@@ -127,6 +134,13 @@
       url="/docent/absentienoteren/lessen"
       handle-as="json"
       on-response="_banaan_ophalen_response_handler">
+    </iron-ajax>
+    <iron-ajax
+      id="ajax_absentielijst_opslaan"
+      method="POST"
+      url="/docent/absentienoteren/opslaan"
+      handle-as="json"
+      on-response="_absentielijst_opslaan_response_handler">
     </iron-ajax>
   </template>
 
@@ -148,6 +162,9 @@
           _c_lessen: {
             type: Array,        
           },
+          c_vak: {
+            type: String,
+          },       
           c_rol: {
             type: String,
           },
@@ -222,6 +239,26 @@
             console.log("banaan aantal studenten="+request.detail.response.length);
             this._c_lessen = request.detail.response;
           },
+
+        _absentielijst_opslaan_request_handler: function() {
+          console.log("_absentielijst_opslaan_request_handler klas="+this.c_klas);
+          console.log("_absentielijst_opslaan_request_handler studenten="+JSON.stringify(this._c_studenten));
+          console.log("_absentielijst_opslaan_request_handler datum="+this.c_datum);
+          console.log("_absentielijst_opslaan_request_handler value="+this.selectedValue);
+          this.$.ajax_absentielijst_opslaan.contentType="application/json";
+          this.$.ajax_absentielijst_opslaan.body={
+            "klas":this.c_klas,
+            "studenten":JSON.stringify(this._c_studenten),
+            "datum":this.c_datum,
+            "vaknaam":this.selectedValue
+          };
+          this.$.ajax_absentielijst_opslaan.generateRequest();
+        },
+
+        _absentielijst_opslaan_response_handler: function(request) {
+          console.log("opslaam response handler");
+          this._go_home();
+        },
 
        _toast_clicked: function(e) {
          var lToast = this.$.toast_invalid_aanroep;        // meldt ongeldige aanroep

@@ -30,6 +30,8 @@ public class AbsentieNoterenController implements Handler {
 			lessenOphalen(conversation);
 		} else if (conversation.getRequestedURI().startsWith("/docent/absentienoteren/ophalen")) {
 			ophalen(conversation);
+		} else if (conversation.getRequestedURI().startsWith("/docent/absentienoteren/opslaan")) {
+			opslaan(conversation);
 		}
 	}
 	
@@ -67,6 +69,8 @@ public class AbsentieNoterenController implements Handler {
 		ArrayList<Les> lessenVanVandaag = informatieSysteem.getLessenVanDatum(newdate);
 		JsonArrayBuilder lJsonArrayBuilder = Json.createArrayBuilder();
 		for (Les les : lessenVanVandaag) {	
+			String klas = les.getKlas();
+			klas = klas.substring(klas.length()-3);
 			JsonObjectBuilder lJsonObjectBuilderVoorLessen = Json.createObjectBuilder();
 			lJsonObjectBuilderVoorLessen
 				.add("vak", les.getVak())
@@ -74,10 +78,22 @@ public class AbsentieNoterenController implements Handler {
 				.add("eindtijd", les.getEindtijd())
 				.add("docent", les.getDocent())
 				.add("lokaal", les.getLokaal())
-				.add("klas", les.getKlas());
+				.add("klas", klas);
 		  lJsonArrayBuilder.add(lJsonObjectBuilderVoorLessen);
 		}
 		String lJsonOutStr = lJsonArrayBuilder.build().toString();
 		conversation.sendJSONMessage(lJsonOutStr);	
+	}
+	
+	private void opslaan(Conversation conversation) {
+		JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
+    String klas = lJsonObjectIn.getString("klas");
+		String studenten = lJsonObjectIn.getString("studenten");
+		String datum = lJsonObjectIn.getString("datum");
+		String vak = lJsonObjectIn.getString("vak");
+		System.out.println(vak);
+		System.out.println(studenten);
+		System.out.println(datum);
+		System.out.println(klas);
 	}
 }
