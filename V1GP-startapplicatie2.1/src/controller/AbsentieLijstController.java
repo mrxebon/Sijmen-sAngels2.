@@ -55,6 +55,7 @@ public class AbsentieLijstController implements Handler {
 				
 			}
 	    String lJsonOutStr = lJsonArrayBuilder.build().toString();												// maak er een string van
+	    System.out.println(lJsonOutStr);
 			conversation.sendJSONMessage(lJsonOutStr);																				// string gaat terug naar de Polymer-GUI!
 		}
 		else if (lStudentZelf != null){

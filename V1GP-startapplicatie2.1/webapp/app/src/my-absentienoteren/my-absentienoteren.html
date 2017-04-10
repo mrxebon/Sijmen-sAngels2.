@@ -86,7 +86,7 @@
     <paper-dropdown-menu label="Les">
       <paper-listbox class="dropdown-content" selected="">
         <template is="dom-repeat" items="[[_c_lessen]]">
-          <paper-item><a href="#/docent/absentienoteren/[[item.klas]]">[[item.klas]] [[item.datum]] [[item.begintijd]]</a></paper-item>
+          <paper-item><a href="#/docent/absentienoteren/[[item.klas]]">[[item.klas]] [[item.begintijd]] [[item.eindtijd]]</a></paper-item>
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
@@ -121,15 +121,13 @@
       handle-as="json"
       on-response="_absentielijst_ophalen_response_handler">
     </iron-ajax>
-
     <iron-ajax
-      id="ajax_lessen_ophalen"
+      id="ajax_banaan_ophalen"
       method="POST"
       url="/docent/absentienoteren/lessen"
       handle-as="json"
-      on_response="_lessen_ophalen_response_handler">
+      on-response="_banaan_ophalen_response_handler">
     </iron-ajax>
-
   </template>
 
   <script>
@@ -145,12 +143,10 @@
 
         properties: {
           _c_studenten: {
-            type: Array,           /* array<student-info>: student-info = {id, firstName, lastName, sameGroup}
-                    array is constant groepnr is changable */
+            type: Array,          
           },
           _c_lessen: {
-            type: Array,           /* array<student-info>: student-info = {id, firstName, lastName, sameGroup}
-                    array is constant groepnr is changable */
+            type: Array,        
           },
           c_rol: {
             type: String,
@@ -189,7 +185,7 @@
          	else{ this.c_klas = "none"; }
 
             if (this.c_rol=="docent") {
-            	this._lessen_ophalen_request_handler();
+            	this._banaan_ophalen_request_handler();
             	if(this.c_klas != "none"){ this._absentielijst_ophalen_request_handler(); }
             } else {                                            // na handmatige url wijziging zonder login
               var lToast = this.$.toast_invalid_aanroep;        // meldt ongeldige aanroep
@@ -212,20 +208,20 @@
           console.log("_absentielijst_ophalen_response_handler aantal studenten="+request.detail.response.length);
           this._c_studenten = request.detail.response;
         },
+        
+        _banaan_ophalen_request_handler: function() {
+            console.log("banaan klas="+this.c_klas);
+            this.$.ajax_banaan_ophalen.contentType="application/json";
+            this.$.ajax_banaan_ophalen.body={
+              "datum":this.c_datum
+            };
+            this.$.ajax_banaan_ophalen.generateRequest();
+          },
 
-        _lessen_ophalen_request_handler: function() {
-          console.log("_lessen_ophalen_request_handler datum="+this.c_datum);
-          this.$.ajax_lessen_ophalen.contentType="application/json";
-          this.$.ajax_lessen_ophalen.body={
-            "datum":this.c_datum
-          };
-          this.$.ajax_lessen_ophalen.generateRequest();
-        },
-
-        _lessen_ophalen_response_handler: function(request) {
-          console.log("_lessen_ophalen_response_handler aantal lessen="+request.detail.response.length);
-          this._c_lessen = request.detail.response;
-        },
+          _banaan_ophalen_response_handler: function(request) {
+            console.log("banaan aantal studenten="+request.detail.response.length);
+            this._c_lessen = request.detail.response;
+          },
 
        _toast_clicked: function(e) {
          var lToast = this.$.toast_invalid_aanroep;        // meldt ongeldige aanroep
