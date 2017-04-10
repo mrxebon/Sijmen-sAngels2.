@@ -301,7 +301,28 @@ public class PrIS {
 			return presentie;
 		}
 	}
-
+	//hier komt de setter
+	public void addabsentie(String datum, int studentNummer, String vakNaam,String klasCode, boolean absent){
+		Les les1=null;
+		Student student1=null;
+		for (Les les : deLessen) {
+			if(les.getDatum()==datum && les.getKlas()==klasCode && les.getVak()==vakNaam){
+				les1=les;
+				System.out.println("student1 is"+ les1);
+			}
+		for (Student student: deStudenten){
+				if(student.getStudentNummer()==studentNummer){
+					student1=student;
+					System.out.println("blahvlha");
+				}
+		
+		
+		
+		}
+		Absentie a1= new Absentie(absent,student1,les1);
+		deAbsenties.add(a1);
+		}
+	}
 	//hier komen de vul de lijst functies
 	private void vulDocenten(ArrayList<Docent> pDocenten) {
 		String csvFile = "././CSV/docenten.csv";
