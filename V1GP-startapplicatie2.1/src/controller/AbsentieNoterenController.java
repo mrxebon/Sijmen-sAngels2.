@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -48,7 +49,8 @@ public class AbsentieNoterenController implements Handler {
 					.add("id", lMedeStudent.getStudentNummer())	
 					.add("firstName", lMedeStudent.getVoornaam())	
 					.add("lastName", lLastName)				 
-				  .add("presence", lMedeStudent.getAanwezigheid());					     
+				  .add("presence", lMedeStudent.getAanwezigheid())	
+					.add("absent", false);
 			  
 			  lJsonArrayBuilder.add(lJsonObjectBuilderVoorStudent);		
 		}
@@ -88,12 +90,17 @@ public class AbsentieNoterenController implements Handler {
 	private void opslaan(Conversation conversation) {
 		JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
     String klas = lJsonObjectIn.getString("klas");
-		String studenten = lJsonObjectIn.getString("studenten");
+		JsonArray studenten = lJsonObjectIn.getJsonArray("studenten");
 		String datum = lJsonObjectIn.getString("datum");
 		String vak = lJsonObjectIn.getString("vak");
-		System.out.println(vak);
-		System.out.println(studenten);
-		System.out.println(datum);
-		System.out.println(klas);
+			if (studenten != null) {
+			for (int i=0;i<studenten.size();i++){
+				JsonObject lGroepMember_jsonObj = studenten.getJsonObject(i );
+				boolean absent = lGroepMember_jsonObj.getBoolean("absent");
+				int studentNummer = lGroepMember_jsonObj.getInt("id");
+				informatieSysteem.addabsentie(datum, studentNummer, vak, klas, absent);
+			}
+		}
+		
 	}
 }

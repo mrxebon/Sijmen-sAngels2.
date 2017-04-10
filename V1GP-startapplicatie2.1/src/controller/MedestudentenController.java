@@ -108,6 +108,7 @@ public class MedestudentenController implements Handler {
     	for (int i=0;i<lGroepMembers_jArray.size();i++){
     		JsonObject lGroepMember_jsonObj = lGroepMembers_jArray.getJsonObject(i );
     		int lStudentNummer = lGroepMember_jsonObj.getInt("id");
+    		System.out.println(lGroepMember_jsonObj);
     		boolean lZelfdeGroep = lGroepMember_jsonObj.getBoolean("sameGroup");
     		if (lZelfdeGroep) {
     			Student lGroepStudent = informatieSysteem.getStudent(lStudentNummer);

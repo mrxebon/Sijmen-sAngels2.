@@ -109,7 +109,7 @@
           <td class="absent">
             <paper-checkbox
               class="my-check"
-              checked="{{item.sameGroup}}">
+              checked="{{item.absent}}">
             </paper-checkbox>
           </td>
         </tr>
@@ -241,22 +241,18 @@
           },
 
         _absentielijst_opslaan_request_handler: function() {
-          console.log("_absentielijst_opslaan_request_handler klas="+this.c_klas);
-          console.log("_absentielijst_opslaan_request_handler studenten="+JSON.stringify(this._c_studenten));
-          console.log("_absentielijst_opslaan_request_handler datum="+this.c_datum);
-          console.log("_absentielijst_opslaan_request_handler value="+this.selectedValue);
           this.$.ajax_absentielijst_opslaan.contentType="application/json";
           this.$.ajax_absentielijst_opslaan.body={
             "klas":this.c_klas,
-            "studenten":JSON.stringify(this._c_studenten),
+            "studenten":this._c_studenten,
             "datum":this.c_datum,
-            "vaknaam":this.selectedValue
+            "vak":this.selectedValue
           };
           this.$.ajax_absentielijst_opslaan.generateRequest();
         },
 
         _absentielijst_opslaan_response_handler: function(request) {
-          console.log("opslaam response handler");
+          console.log("opslaan response handler");
           this._go_home();
         },
 
