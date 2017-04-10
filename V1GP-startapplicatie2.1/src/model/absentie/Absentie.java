@@ -20,14 +20,29 @@ public class Absentie {
 		}
 		isZiek=leerling.getZiek();
 	}
+	
 	public boolean getZiek(){
 		return isZiek;
 	}
+	
 	public boolean getAbsentie(){
 		return isAbsent;
 	}
+	
 	public Student getStudent(){
 		return leerling;
+	}
+	
+	public String getDatum() {
+		return deLes.getDatum();
+	}
+	
+	public int getStudentNummer() {
+		return leerling.getStudentNummer();
+	}
+	
+	public String getCursusnaam() {
+		return deLes.getVak();
 	}
 	
 }
