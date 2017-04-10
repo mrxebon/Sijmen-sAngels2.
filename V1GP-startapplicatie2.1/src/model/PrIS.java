@@ -6,7 +6,7 @@ import model.klas.Klas;
 import model.persoon.Docent;
 import model.persoon.Student;
 import model.rooster.Les;
-
+import model.absentie.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -23,6 +23,7 @@ public class PrIS {
 	private ArrayList<Klas> deKlassen;
 	private ArrayList<Les> deLessen;
 	private ArrayList<Les> deLessenVanVandaag = new ArrayList<Les>();
+	private ArrayList<Absentie> deAbsenties= new ArrayList<Absentie>();
 	
 	/**
 	 * De constructor maakt een set met standaard-data aan. Deze data
@@ -279,13 +280,11 @@ public class PrIS {
 				String klas = element[6];
 				Les l1 = new Les(datum, begintijd, eindtijd, vak, docent, lokaal, klas);
 				pLes.add(l1);
-				System.out.println(l1.getObjectKlas());
 				for(Klas k: deKlassen){
 					if (k.getKlasCode().equals(klas)){
 						l1.setObjectKlas(k);
 					}
 				}
-				System.out.println(l1.getObjectKlas());
 			}
 	
 		} catch (FileNotFoundException e) {
