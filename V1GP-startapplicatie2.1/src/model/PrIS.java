@@ -219,6 +219,90 @@ public class PrIS {
 		
 		return "undefined";
 	}
+	
+	//Hier komen de absentie functies
+	public int presentiePercentageVanStudent(int studentNummer){
+		int absent=0;
+		int totaal=0;
+		for (Absentie absentie : deAbsenties) {
+			if (absentie.getStudentNummer()==studentNummer){
+				if(absentie.getAbsentie()==true){
+					absent=absent+1;
+				}
+				totaal=totaal+1;
+			}
+
+		}
+		if(absent == 0){
+			return 100;
+		}
+		else{
+			int presentie = 100-(absent/totaal*100);
+			return presentie;
+		}
+	}
+	public int presentiePercentageVanStudentperVak(int studentNummer, String vakCode){
+		int absent=0;
+		int totaal=0;
+		for (Absentie absentie : deAbsenties) {
+			if (absentie.getStudentNummer()==studentNummer && absentie.getLes().getVak()==vakCode){
+				if(absentie.getAbsentie()==true){
+					absent=absent+1;
+				}
+				totaal=totaal+1;
+			}
+
+		}
+		if(absent == 0){
+			return 100;
+		}
+		else{
+			int presentie = 100-(absent/totaal*100);
+			return presentie;
+		}
+	}
+	public int presentiePercentageVanKlas(String klasCode){
+		int absent=0;
+		int totaal=0;
+		for (Absentie absentie : deAbsenties) {
+			if (absentie.getKlas().getKlasCode()==klasCode){
+				if(absentie.getAbsentie()==true){
+					absent=absent+1;
+				}
+				totaal=totaal+1;
+			}
+
+		}
+		if(absent == 0){
+			return 100;
+		}
+		else{
+			int presentie = 100-(absent/totaal*100);
+			return presentie;
+		}
+	}
+	public int percentageVanKlasPerVak(String KlasCode, String vakCode){
+		int absent=0;
+		int totaal=0;
+		for (Absentie absentie : deAbsenties) {
+			if (absentie.getKlas().getKlasCode()==KlasCode && absentie.getLes().getVak()==vakCode){
+				if(absentie.getAbsentie()==true){
+					absent=absent+1;
+				}
+				totaal=totaal+1;
+			}
+
+		}
+		if(absent == 0){
+			return 100;
+		}
+		else{
+			int presentie = 100-(absent/totaal*100);
+			return presentie;
+		}
+	}
+
+	//hier komen de vul de lijst functies
 	private void vulDocenten(ArrayList<Docent> pDocenten) {
 		String csvFile = "././CSV/docenten.csv";
 		BufferedReader br = null;
