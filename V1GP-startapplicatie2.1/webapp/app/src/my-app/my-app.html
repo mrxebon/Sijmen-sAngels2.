@@ -150,11 +150,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <iron-icon icon="account-box"></iron-icon>
             <span>Inloggen</span>
           </a>
- 
-          <a name="logout" href$="[[_c_baseURL]]logout"  verborgen$="[[_are_strings_equal(_rol, 'undefined')]]">
-            <iron-icon icon="account-box"></iron-icon>
-            <span>Uitloggen</span>
-          </a>
 
           <!-- beschikbaar voor docent---------------------------------------------------- -->
           <a name="docent_absentielijst" href$="[[_c_baseURL]]docent/absentielijst"  verborgen$="[[!_are_strings_equal(_rol, 'docent')]]">
@@ -179,6 +174,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <a name="student_studentabsentie" href$="[[_c_baseURL]]student/studentabsentie"  verborgen$="[[!_are_strings_equal(_rol, 'student')]]">
             <iron-icon icon="social:group"></iron-icon>
             <span>Mijn Absentie</span>
+          </a>
+
+          <a name="logout" href$="[[_c_baseURL]]logout"  verborgen$="[[_are_strings_equal(_rol, 'undefined')]]">
+            <iron-icon icon="account-box"></iron-icon>
+            <span>Uitloggen</span>
           </a>
 
         </iron-selector>
