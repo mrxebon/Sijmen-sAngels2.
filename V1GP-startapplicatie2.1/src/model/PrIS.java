@@ -245,7 +245,7 @@ public class PrIS {
 		int absent=0;
 		int totaal=0;
 		for (Absentie absentie : deAbsenties) {
-			if (absentie.getStudentNummer()==studentNummer && absentie.getLes().getVak()==vakCode){
+			if (absentie.getStudentNummer()==studentNummer && absentie.getLes().getVak().equals(vakCode)){
 				if(absentie.getAbsentie()==true){
 					absent=absent+1;
 				}
@@ -265,7 +265,7 @@ public class PrIS {
 		int absent=0;
 		int totaal=0;
 		for (Absentie absentie : deAbsenties) {
-			if (absentie.getKlas().getKlasCode()==klasCode){
+			if (absentie.getKlas().getKlasCode().equals(klasCode)){
 				if(absentie.getAbsentie()==true){
 					absent=absent+1;
 				}
@@ -281,11 +281,11 @@ public class PrIS {
 			return presentie;
 		}
 	}
-	public int percentageVanKlasPerVak(String KlasCode, String vakCode){
+	public int percentageVanKlasPerVak(String klasCode, String vakCode){
 		int absent=0;
 		int totaal=0;
 		for (Absentie absentie : deAbsenties) {
-			if (absentie.getKlas().getKlasCode()==KlasCode && absentie.getLes().getVak()==vakCode){
+			if (absentie.getKlas().getKlasCode().equals(klasCode) && absentie.getLes().getVak().equals(vakCode)){
 				if(absentie.getAbsentie()==true){
 					absent=absent+1;
 				}
