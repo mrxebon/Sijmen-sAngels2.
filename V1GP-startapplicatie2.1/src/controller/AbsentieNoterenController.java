@@ -78,7 +78,6 @@ public class AbsentieNoterenController implements Handler {
 		  lJsonArrayBuilder.add(lJsonObjectBuilderVoorLessen);
 		}
 		String lJsonOutStr = lJsonArrayBuilder.build().toString();
-		System.out.println(lJsonOutStr);
 		conversation.sendJSONMessage(lJsonOutStr);	
 	}
 }
