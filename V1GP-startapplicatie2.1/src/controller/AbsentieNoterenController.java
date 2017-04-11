@@ -106,7 +106,6 @@ public class AbsentieNoterenController implements Handler {
 				JsonObject lGroepMember_jsonObj = studenten.getJsonObject(i );
 				boolean absent = lGroepMember_jsonObj.getBoolean("absent");
 				int studentNummer = lGroepMember_jsonObj.getInt("id");
-				System.out.println("date:"+newdate);
 				informatieSysteem.addabsentie(newdate, studentNummer, vak, klas, absent);
 
 			}
