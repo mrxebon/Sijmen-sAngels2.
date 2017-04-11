@@ -154,7 +154,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <!-- beschikbaar voor docent---------------------------------------------------- -->
           <a name="docent_absentielijst" href$="[[_c_baseURL]]docent/absentielijst"  verborgen$="[[!_are_strings_equal(_rol, 'docent')]]">
             <iron-icon icon="icons:assignment"></iron-icon>
-            <span>Absentielijst opvragen</span>
+            <span>Absentielijst</span>
           </a>
 
           <a name="docent_absentienoteren" href$="[[_c_baseURL]]docent/absentienoteren"  verborgen$="[[!_are_strings_equal(_rol, 'docent')]]">
@@ -258,7 +258,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 c_visible="[[_are_strings_equal(_ar_page, 'docent_absentienoteren')]]"
                 c_rol="[[_rol]]"
                 c_username="[[_username]]"
-                c_klas="[[_ar_subsubroute_data.subsubpage]]">
+                c_klas="">
               </my-absentienoteren>
             </paper-material>
           </section>

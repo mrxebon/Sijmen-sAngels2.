@@ -67,7 +67,7 @@
         <paper-button on-click="_toast_clicked" class="toast-button">Sluiten</paper-button>
     </paper-toast>
 
-    <div class="my-title">Absentielijst opvragen</div>
+    <div class="my-title">Absentielijst</div>
     <table>
       <tr>
         <td><a class="klasButton" href="#/docent/absentielijst/V1A">V1A </a></td>
@@ -188,6 +188,9 @@
             if(getPostValue != "absentielijst"){
   				this.c_klas = getPostValue;
   				this.c_info = "U kijkt nu naar klas: " + this.c_klas;
+            } else { 
+            	this.c_klas= ""; 
+            	this.c_info = "Kies een klas of zoek naar een leerling."; 
             }
             if (this.c_rol=="docent") {                        // voor studenten
               this._absentielijst_ophalen_request_handler();    //    haal info op van server
@@ -214,8 +217,6 @@
         	  this.c_info += " met " + request.detail.response.length + " leerlingen.";
           } else if(this.c_info == ""){
         	  this.c_info = "Kies een klas of zoek naar een leerling.";
-          }else{
-        	  this.c_info += " met 0 leerlingen.";
           }
           this._c_studenten = request.detail.response;
         },
