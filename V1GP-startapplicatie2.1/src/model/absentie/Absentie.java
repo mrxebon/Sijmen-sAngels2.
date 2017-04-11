@@ -52,5 +52,17 @@ public class Absentie {
 	public Klas getKlas() {
 		return eigenKlas;
 	}
+	public boolean equals(Object object){
+		boolean x= false;
+		if(object instanceof Absentie){
+			Absentie absentie = (Absentie) object;
+			if (this.deLes.equals(absentie.deLes)&& this.leerling.equals(absentie.leerling)){
+				x=true;
+			}
+		}
+		
+		
+		return x;
+	}
 
 }

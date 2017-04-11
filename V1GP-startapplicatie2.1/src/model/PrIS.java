@@ -300,6 +300,7 @@ public class PrIS {
 	// hier komt de setter
 	public void addabsentie(String datum, int studentNummer, String vakNaam, String klasCode, boolean absent) {
 		Les les1 = null;
+		boolean isAlgemeld=false;
 		Student student1 = null;
 		for (Les les : deLessen) {
 
@@ -309,17 +310,32 @@ public class PrIS {
 				
 			}
 		}
-		System.out.println("post");
+
 			for (Student student : deStudenten) {
 				if (student.getStudentNummer() == studentNummer) {
 					student1 = student;
-					System.out.println("blahvlha");
 				}
 
 			}
-			Absentie a1 = new Absentie(absent, student1, les1);
-			deAbsenties.add(a1);
-		
+			System.out.println("post");
+			Absentie a1=null;
+			a1 = new Absentie(absent, student1, les1);
+			System.out.println("post");
+			for(Absentie absentie : deAbsenties){
+				if(absentie.equals(a1)==true){
+					System.out.println("error detected accusation");
+					isAlgemeld=true;
+					
+				}
+			}
+			System.out.println(isAlgemeld);
+			
+			if(isAlgemeld==false){
+				deAbsenties.add(a1);
+				
+			}
+			
+			System.out.println(deAbsenties);
 	}
 
 	// hier komen de vul de lijst functies
