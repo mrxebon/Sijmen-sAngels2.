@@ -61,7 +61,7 @@ public class AbsentieLijstController implements Handler {
 					.add("id", lMedeStudent.getStudentNummer())																	//vul het JsonObject		     
 					.add("firstName", lMedeStudent.getVoornaam())	
 					.add("lastName", lLastName)				 
-				  .add("presence", lMedeStudent.getAanwezigheid());					     
+				  .add("presence", informatieSysteem.presentiePercentageVanStudent(lMedeStudent.getStudentNummer()));					     
 			  lJsonArrayBuilder.add(lJsonObjectBuilderVoorStudent);													//voeg het JsonObject aan de array toe				     
 		}
     String lJsonOutStr = lJsonArrayBuilder.build().toString();												// maak er een string van
@@ -82,7 +82,7 @@ public class AbsentieLijstController implements Handler {
 		.add("id", lStudentZelf.getStudentNummer())																	//vul het JsonObject		     
 		.add("firstName", lStudentZelf.getVoornaam())	
 		.add("lastName", lLastName)				 
-		.add("presence", lStudentZelf.getAanwezigheid());					     
+		.add("presence", informatieSysteem.presentiePercentageVanStudent(lStudentZelf.getStudentNummer()));					     
 		lJsonArrayBuilder.add(lJsonObjectBuilderVoorStudent);													//voeg het JsonObject aan de array toe				     
 	
     String lJsonOutStr = lJsonArrayBuilder.build().toString();												// maak er een string van
