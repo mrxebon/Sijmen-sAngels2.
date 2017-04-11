@@ -71,7 +71,7 @@ public class Absentie {
 			s="ziek";
 			//vak datum, isziek
 		}
-		return deLes.getKlas()+","+deLes.getDatum()+","+s;
+		return deLes.getVak()+","+deLes.getDatum()+","+s;
 	}
 
 }
