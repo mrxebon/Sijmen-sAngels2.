@@ -98,6 +98,9 @@
     </paper-dropdown-menu>
       <table class="studentenTable">
       <tr>
+      	<td colspan="3"><span class="klasTitle">{{c_info}}</span></td>
+      </tr>
+      <tr>
         <th class="voornaam">Voornaam </th>
         <th class="achternaam">Achternaam </th>
         <th class="absent">Absent</th>
@@ -164,7 +167,10 @@
           },
           c_vak: {
             type: String,
-          },       
+          },  
+          c_info:{
+        	  type: String,
+          },
           c_rol: {
             type: String,
           },
@@ -198,12 +204,19 @@
           if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
           	var getUrl = window.location.href;
             var getClickedKlas = getUrl.split("/").pop();
-         	if(getClickedKlas != "absentienoteren"){ this.c_klas = getClickedKlas; }
-         	else{ this.c_klas = "none"; }
+         	if(getClickedKlas != "absentienoteren"){ 
+         		this.c_klas = getClickedKlas; 
+         		this.c_info = "U kijkt nu naar klas: "+ this.c_klas +" voor de les: " + this.selectedValue;
+         	}
+         	else{ this.c_klas = ""; this.c_info = "Kies een les.";  }
 
             if (this.c_rol=="docent") {
             	this._banaan_ophalen_request_handler();
-            	if(this.c_klas != "none"){ this._absentielijst_ophalen_request_handler(); }
+            	this._c_studenten = "";
+            	this.selectedValue = "";
+            	if(this.c_klas != ""){
+            		this._absentielijst_ophalen_request_handler(); 
+            		}
             } else {                                            // na handmatige url wijziging zonder login
               var lToast = this.$.toast_invalid_aanroep;        // meldt ongeldige aanroep
               lToast.open();                                    /* het sluiten van deze error verwijst  */
@@ -227,7 +240,7 @@
         },
         
         _banaan_ophalen_request_handler: function() {
-            console.log("banaan klas="+this.c_klas);
+            console.log("klas="+this.c_klas);
             this.$.ajax_banaan_ophalen.contentType="application/json";
             this.$.ajax_banaan_ophalen.body={
               "datum":this.c_datum
@@ -236,7 +249,8 @@
           },
 
           _banaan_ophalen_response_handler: function(request) {
-            console.log("banaan aantal studenten="+request.detail.response.length);
+            console.log("aantal lessen="+request.detail.response.length);
+            if(request.detail.response.length == 0){ this.c_info = "Er zijn geen lessen vandaag."; }
             this._c_lessen = request.detail.response;
           },
 
