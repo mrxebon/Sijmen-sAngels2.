@@ -215,6 +215,25 @@ public class PrIS {
 
 		return "undefined";
 	}
+	//hier is de functie die de absenten van de individuele leerling afleest.
+	
+	public String weergeefAlleAbsenten(int studentNummer){
+		String s="";
+		boolean firstString =true;
+		for (Absentie absentie : deAbsenties) {
+			if (absentie.getStudentNummer() == studentNummer) {
+				if (absentie.getAbsentie() == true && firstString==true) {
+					s=s+absentie.toString();
+					firstString=false;
+				}
+				if (absentie.getAbsentie() == true && firstString==false) {
+					s=s+":"+absentie.toString();
+				}
+			}
+
+		}
+		return s;
+	}
 
 	// Hier komen de absentie functies
 	public int presentiePercentageVanStudent(int studentNummer) {
