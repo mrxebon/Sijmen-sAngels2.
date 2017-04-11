@@ -305,7 +305,7 @@ public class PrIS {
 		for (Les les : deLessen) {
 
 			if (les.getObjectKlas().getNaam().equals(klasCode)&& les.getVak().equals(vakNaam) && les.getDatum().equals(datum)) {
-				System.out.println("hello");
+				
 				les1 = les;
 				
 			}
@@ -317,13 +317,12 @@ public class PrIS {
 				}
 
 			}
-			System.out.println("post");
 			
 			Absentie a1 = new Absentie(absent, student1, les1);
 			System.out.println("post");
 			for(Absentie absentie : deAbsenties){
 				if(absentie.equals(a1)==true){
-					System.out.println("error detected accusation");
+					
 					isAlgemeld=true;
 					
 				}
@@ -332,11 +331,10 @@ public class PrIS {
 			
 			if(isAlgemeld==false){
 				deAbsenties.add(a1);
-				System.out.println("geadd");
+				
 				
 			}
 			
-			System.out.println(deAbsenties);
 	}
 
 	// hier komen de vul de lijst functies
