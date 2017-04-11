@@ -318,8 +318,8 @@ public class PrIS {
 
 			}
 			System.out.println("post");
-			Absentie a1=null;
-			a1 = new Absentie(absent, student1, les1);
+			
+			Absentie a1 = new Absentie(absent, student1, les1);
 			System.out.println("post");
 			for(Absentie absentie : deAbsenties){
 				if(absentie.equals(a1)==true){
@@ -332,6 +332,7 @@ public class PrIS {
 			
 			if(isAlgemeld==false){
 				deAbsenties.add(a1);
+				System.out.println("geadd");
 				
 			}
 			
