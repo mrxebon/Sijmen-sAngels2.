@@ -44,9 +44,6 @@
       .studentenTable{
       	margin-left:20px;
       }
-      .absentieTable{
-        display:inline-table;
-      }
     </style>
 
     <paper-toast
@@ -57,68 +54,51 @@
     </paper-toast>
 
     <div class="my-title">Mijn Absentielijst</div>
-    <table class="studentenTable">
-      <template is="dom-repeat" items="[[_c_studenten]]">
-        <tr>
-          <th class="voornaam">Leerlingnummer </th>
-          <td class="input">[[item.id]]</td>
-        </tr>
-        <tr>
-          <th class="voornaam">Voornaam </th>
-          <td class="input">[[item.firstName]]</td>
-        </tr>
-        <tr>
-          <th class="achternaam">Achternaam </th>
-          <td class="input">[[item.lastName]]</td>
-        </tr>
-        <tr>
-          <th class="aanwezigheid">Aanwezigheid</th>
-          <td class="input">[[item.presence]]%</td>
-        </tr>
-      </template>
-      </table>
-      <table class="absentieTable">
-      <tr>
-      	<th class="voornaam"><h2>Absentie meldingen</h2></th>
-      </tr>
-      <tr>
-      	<th class="voornaam">Vak </th>
-        <th class="achternaam">Datum </th>
-      </tr>
-      <tr>
-      	<td class="voornaam">AUI </td>
-        <td class="achternaam">05-04-2017 </td>
-      </tr>
-      <tr>
-      	<td class="voornaam">OODC </td>
-        <td class="achternaam">23-03-2017 </td>
-      </tr>
-    </table>
-    <table class="absentieTable">
-      <tr>
-      	<th class="voornaam"><h2>Ziek meldingen</h2></th>
-      </tr>
-      <tr>
-      	<th class="voornaam">Vak </th>
-        <th class="achternaam">Datum </th>
-      </tr>
-      <tr>
-      	<td class="voornaam">OODC </td>
-        <td class="achternaam">01-04-2017 </td>
-      </tr>
-      <tr>
-      	<td class="voornaam">OODC </td>
-        <td class="achternaam">19-03-2017 </td>
-      </tr>
-    </table>
-
+      <template is="dom-repeat" items="{{ajaxResponse}}" as="header">
+        <table class="studentenTable">
+	        <tr>
+	          <th class="voornaam">Leerlingnummer </th>
+	          <td class="input">[[header.id]]</td>
+	        </tr>
+	        <tr>
+	          <th class="voornaam">Voornaam </th>
+	          <td class="input">[[header.firstName]]</td>
+	        </tr>
+	        <tr>
+	          <th class="achternaam">Achternaam </th>
+	          <td class="input">[[header.lastName]]</td>
+	        </tr>
+	        <tr>
+	          <th class="aanwezigheid">Aanwezigheid</th>
+	          <td class="input">[[header.presence]]%</td>
+	        </tr>
+	        </table>
+	        <table class="absentieTable">
+		      <tr>
+		      	<th class="voornaam"><h2>Absentie meldingen</h2></th>
+		      </tr>
+		      <tr>
+		      	<th class="voornaam">Vak </th>
+		        <th class="achternaam">Datum </th>
+		        <th class="achternaam">Ziek </th>
+		      </tr>
+		      <template is="dom-repeat" items="{{header.absenties}}" as="sub">
+		        <tr>
+		          <td class="input">[[sub.vak]]</td>
+		          <td class="input">[[sub.datum]]</td>
+		          <td class="input">[[sub.ziek]]</td>
+		        </tr>
+		      </template>
+	      </table>
+	    </template>
 
     <iron-ajax
       id="ajax_studentabsentie_ophalen"
       method="POST"
       url="/student/studentabsentie/ophalen"
       handle-as="json"
-      on-response="_studentabsentie_ophalen_response_handler">
+      on-response="_studentabsentie_ophalen_response_handler"
+      last-response="{{ajaxResponse}}">
     </iron-ajax>
 
   </template>
@@ -136,11 +116,16 @@
 
         properties: {
           _c_studenten: {
-            type: Array,           /* array<student-info>: student-info = {id, firstName, lastName, sameGroup} 
-										array is constant groepnr is changable */
+            type: Array, 
+          },
+          _c_absenties: {
+              type: Array, 
           },
           c_rol: {
             type: String,
+          },
+          c_studentnr: {
+              type: String,
           },
           c_username: {
             type: String,
@@ -148,9 +133,7 @@
           c_visible: {
             type: Boolean,                                      /* true when element is the active visible item */
             value: false,
-            observer: '_initializing',                          /* wordt ook aangeroepen bijwisseling van true naar false.
-                                                                   regel in de functie dat er niets gebeurd
-                                                                   als c_visible false is */
+            observer: '_initializing',                         
           },
         },
         
@@ -164,14 +147,12 @@
         
         _initializing : function() { 
           if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
-        	  console.log("Dit is de eerste; " + this.c_username);
         	  var getUrl = window.location.href;
               var getPostValue = getUrl.split("/").pop();
               var newUsername = getPostValue.toLowerCase();
               if(getPostValue != "studentabsentie"){
     				this.c_username = newUsername;
               }
-              console.log("Dit is de tweede; " + this.c_username);
             if (this.c_rol=="student" || this.c_rol=="docent") {                        // voor studenten
               this._studentabsentie_ophalen_request_handler();    //    haal info op van server
             } else {                                            // na handmatige url wijziging zonder login
@@ -190,18 +171,16 @@
           };
           this.$.ajax_studentabsentie_ophalen.generateRequest();
         },
-
         _studentabsentie_ophalen_response_handler: function(request) {
-          console.log("_studentabsentie_ophalen_response_handler aantal studenten="+request.detail.response.length);
+          console.log("Dit is de response: " + request.detail.response);
           this._c_studenten = request.detail.response;
         },
-
+        
        _toast_clicked: function(e) {
          var lToast = this.$.toast_invalid_aanroep;        // meldt ongeldige aanroep
          lToast.toggle();
          this._go_home();
         },
-
       });
     })();
   </script>

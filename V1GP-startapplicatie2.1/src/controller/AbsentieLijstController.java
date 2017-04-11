@@ -1,7 +1,9 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -74,18 +76,37 @@ public class AbsentieLijstController implements Handler {
 		JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
 		String lGebruikersnaam = lJsonObjectIn.getString("username");
 		Student lStudentZelf = informatieSysteem.getStudent(lGebruikersnaam);
+		String data = informatieSysteem.weergeefAlleAbsenten(lStudentZelf.getStudentNummer());
+		
+		JsonArrayBuilder TestArrayBuilder = Json.createArrayBuilder();
+		JsonObjectBuilder lJsonObjectBuilderVoorAbsentie = Json.createObjectBuilder(); // maak het JsonObject voor een absentie
+		List<String> dataList = Arrays.asList(data.split(":"));
+		for(String absentie : dataList){
+			String[] absentieData = absentie.split(",");
+			String vak = absentieData[0];
+			String datum = absentieData[1];
+			String ziek = absentieData[2];
+			
+			lJsonObjectBuilderVoorAbsentie
+			.add("vak", vak)     
+			.add("datum", datum)	
+			.add("ziek", ziek);				     
+			TestArrayBuilder.add(lJsonObjectBuilderVoorAbsentie);													//voeg het JsonObject aan de array toe		
+		}
+		
 		JsonArrayBuilder lJsonArrayBuilder = Json.createArrayBuilder();						// Maak array voor return
-				
 		JsonObjectBuilder lJsonObjectBuilderVoorStudent = Json.createObjectBuilder(); // maak het JsonObject voor een student
 		String lLastName = lStudentZelf.getVolledigeAchternaam();
 		lJsonObjectBuilderVoorStudent
 		.add("id", lStudentZelf.getStudentNummer())																	//vul het JsonObject		     
 		.add("firstName", lStudentZelf.getVoornaam())	
-		.add("lastName", lLastName)				 
-		.add("presence", informatieSysteem.presentiePercentageVanStudent(lStudentZelf.getStudentNummer()));					     
-		lJsonArrayBuilder.add(lJsonObjectBuilderVoorStudent);													//voeg het JsonObject aan de array toe				     
-	
+		.add("lastName", lLastName)	
+		.add("presence", informatieSysteem.presentiePercentageVanStudent(lStudentZelf.getStudentNummer()))
+		.add("absenties", TestArrayBuilder);					     
+		lJsonArrayBuilder.add(lJsonObjectBuilderVoorStudent);													//voeg het JsonObject aan de array toe		
+		
     String lJsonOutStr = lJsonArrayBuilder.build().toString();												// maak er een string van
-		conversation.sendJSONMessage(lJsonOutStr);																				// string gaat terug naar de Polymer-GUI!
+    System.out.println(lJsonOutStr);
+		conversation.sendJSONMessage(lJsonOutStr);					// string gaat terug naar de Polymer-GUI!
 	}
 }
