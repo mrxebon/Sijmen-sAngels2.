@@ -232,9 +232,8 @@ public class PrIS {
 		if (absent == 0) {
 			return 100;
 		} else {
-			double presentie = 100 - (absent / totaal * 100);
-			int presentie1=(int)presentie;
-			return presentie1;
+			double presentie = 100 - ((double)absent / (double)totaal * 100);
+			return (int)presentie;
 		}
 	}
 
@@ -253,9 +252,8 @@ public class PrIS {
 		if (absent == 0) {
 			return 100;
 		} else {
-			double presentie = 100 - (absent / totaal * 100);
-			int presentie1=(int)presentie;
-			return presentie1;
+			double presentie = 100 - ((double)absent / (double)totaal * 100);
+			return (int)presentie;
 		}
 	}
 
@@ -274,9 +272,8 @@ public class PrIS {
 		if (absent == 0) {
 			return 100;
 		} else {
-			double presentie = 100 - (absent / totaal * 100);
-			int presentie1=(int)presentie;
-			return presentie1;
+			double presentie = 100 - ((double)absent / (double)totaal * 100);
+			return (int)presentie;
 		}
 	}
 
@@ -295,9 +292,8 @@ public class PrIS {
 		if (absent == 0) {
 			return 100;
 		} else {
-			double presentie = 100 - (absent / totaal * 100);
-			int presentie1=(int)presentie;
-			return presentie1;
+			double presentie = 100 - ((double)absent / (double)totaal * 100);
+			return (int)presentie;
 		}
 	}
 
