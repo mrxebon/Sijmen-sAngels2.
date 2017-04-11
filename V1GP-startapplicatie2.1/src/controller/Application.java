@@ -37,10 +37,12 @@ public class Application {
 		ZiekMeldenController ziekMeldenController = new ZiekMeldenController(infoSysteem);
 		AbsentieLijstController absentielijstController = new AbsentieLijstController(infoSysteem);
 		AbsentieNoterenController absentienoterenController = new AbsentieNoterenController(infoSysteem);
+		WachtwoordWijzigenController wachtwoordWijzigenController = new WachtwoordWijzigenController(infoSysteem);
 				
 		server.registerHandler("/systeemdatum/lesinfo", systeemDatumController);
 
 		server.registerHandler("/login", loginController);
+		server.registerHandler("/wachtwoordwijzigen", wachtwoordWijzigenController);
 
   	server.registerHandler("/student/medestudenten/ophalen", medestudentenController);
   	server.registerHandler("/student/medestudenten/opslaan", medestudentenController);

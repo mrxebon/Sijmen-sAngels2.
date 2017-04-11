@@ -24,8 +24,12 @@ public abstract class Persoon {
 		return this.achternaam;
 	}
 
-	protected String getWachtwoord() {
+	public String getWachtwoord() {
 		return this.wachtwoord;
+	}
+	
+	public void setWachtwoord(String nieuwWachtwoord) {
+		this.wachtwoord = nieuwWachtwoord;
 	}
 
 	public String getGebruikersnaam() {

@@ -19,6 +19,9 @@
         color: blue;
         padding-bottom: 2px;                    /* space above the border line */
       }
+      .input {
+        width: 250px;
+      }
     </style>
 
     <paper-toast
@@ -29,8 +32,21 @@
     </paper-toast>
 
     <div class="my-title">Wachtwoord wijzigen</div>
-    <h2>yo hier ben ik</h2>
+    <div class="input">
+      <paper-input label="Huidige wachtwoord" type="password" value="{{_c_wachtwoord_huidig}}"></paper-input>
+      <br>
+      <paper-input label="Nieuw wachtwoord" type="password" value="{{_c_wachtwoord_nieuw}}"></paper-input>
+      <paper-input label="Bevestigen nieuw wachtwoord" type="password" value="{{_c_wachtwoord_nieuw2}}"></paper-input>
+      <paper-button raised on-click="_wachtwoord_wijzigen_handler">Wijzig wachtwoord</paper-button>
+    </div>
 
+    <iron-ajax
+      id="ajax_wachtwoordrequest"
+      method="POST"
+      url="/wachtwoordwijzigen"
+      handle-as="json"
+      on-response="_wachtwoord_response_handler">
+    </iron-ajax>
   </template>
 
   <script>
@@ -48,12 +64,34 @@
           c_username: {    
             type: String,
           },
+          c_rol: {
+            type: String,
+          },
+          _c_wachtwoord_nieuw2: {
+            type : String,
+          },
+          _c_wachtwoord_huidig: {
+            type: String,
+          },
+          _c_wachtwoord_nieuw: {
+            type: String,
+          },
         },
 
-        _initialize : function() { 
-          if (this.c_visible) {
-            
-          }
+        _wachtwoord_wijzigen_handler : function() {
+          this.$.ajax_wachtwoordrequest.contentType="application/json";
+          this.$.ajax_wachtwoordrequest.body = {
+            "rol": this.c_rol,
+            "username": this.c_username,
+            "nieuw2": this._c_wachtwoord_nieuw2,
+            "huidig": this._c_wachtwoord_huidig,
+          };
+          this.$.ajax_wachtwoordrequest.generateRequest();
+        },
+
+        _wachtwoord_response_handler : function(request) {
+         var result = request.detail.response.result;
+         alert(result);          
         },
 
       });
