@@ -66,8 +66,9 @@
       text="U hebt dit scherm op een illegale manier geactiveerd. U wordt verwezen naar de home page!">
         <paper-button on-click="_toast_clicked" class="toast-button">Sluiten</paper-button>
     </paper-toast>
-
     <div class="my-title">Absentielijst</div>
+    
+	<!-- Maak een table voor de klasbuttons -->
     <table>
       <tr>
         <td><a class="klasButton" href="#/docent/absentielijst/V1A">V1A </a></td>
@@ -78,20 +79,22 @@
         <td><a class="klasButton" href="#/docent/absentielijst/V1F">V1F </a></td>
       </tr>
     </table>
+    <!-- Voeg een zoekveld toe onder de knoppen -->
     <div id="search" show$="{{show}}" on-click="toggleSearch">
         <paper-icon-button icon="search"></paper-icon-button>
         <input is="iron-input" bind-value="{{searchInput}}" type="search" id="input" on-keyup="onKeyPress" autocomplete="off">
      </div>
+     <!-- Maak tabel voor de studenten -->
     <table class="studentenTable">
       <tr>
-      	<td colspan="3"><span class="klasTitle">{{c_info}}</span></td>
+      	<td colspan="3"><span class="klasTitle">{{c_info}}</span></td> <!-- info tekst over huidige klas -->
       </tr>
       <tr>
         <th class="voornaam">Voornaam </th>
         <th class="achternaam">Achternaam </th>
         <th class="aanwezigheid">Aanwezigheid</th>
       </tr>
-      <template is="dom-repeat" items="[[_c_studenten]]">
+      <template is="dom-repeat" items="[[_c_studenten]]"> <!-- Loop door de studenten heen en zet deze in de tabel onder elkaar -->
         <tr>
           <td class="voornaam">  <a href$="#/student/studentabsentie/[[item.firstName]].[[item.lastName]]@student.hu.nl">[[item.firstName]]</a></td>
           <td class="achternaam"><a href$="#/student/studentabsentie/[[item.firstName]].[[item.lastName]]@student.hu.nl">[[item.lastName]] </a></td>
@@ -99,7 +102,6 @@
         </tr>
       </template>
     </table>
-
 
     <iron-ajax
       id="ajax_absentielijst_ophalen"
@@ -124,8 +126,7 @@
 
         properties: {
           _c_studenten: {
-            type: Array,           /* array<student-info>: student-info = {id, firstName, lastName, sameGroup} 
-										array is constant groepnr is changable */
+            type: Array,        //Array voor de studenten
           },
           c_rol: {
             type: String,
@@ -136,7 +137,7 @@
           c_klas: {
               type: String,
             },
-          searchInput: {
+          searchInput: { //waarde die ingevuld is door de gebruiker in het zoekveld
               type: String,
               value: "",
           },
@@ -144,51 +145,46 @@
         	  type: String,
           },
           c_visible: {
-            type: Boolean,                                      /* true when element is the active visible item */
+            type: Boolean,                              
             value: false,
             observer: '_initializing',                          
           },
         },
         toggleSearch: function(e) {
-            if (e) { // comes first
-                e.stopPropagation();
-            }
-            if (e.target === this.$.input) {
-                return;
-            }
+            if (e) { e.stopPropagation(); }
+            if (e.target === this.$.input) {  return;  }
             this.show = !this.show;
             this.async(function() {
                 this.$.input.focus();
             });
         },
         onKeyPress: function(e) {
-            if (e.keyCode == 13) { // Enter
-                var q = this.searchInput;
-                this.c_klas = "";
+            if (e.keyCode == 13) { // Als ENTER gedrukt is
+                var q = this.searchInput; //pak de input van zoekveld
+                this.c_klas = ""; 
                 this.c_username = q;
-                window.location.href = "#/docent/absentielijst/"+q;
+                window.location.href = "#/docent/absentielijst/"+q; //zorg dat de pagina weet waar op gezocht is
                 this.show = false;
-                this.searchInput = '';
+                this.searchInput = ''; //leeg het zoekveld weer
                 this.c_info = "U heeft gezocht op: " + q;
             }
         },
         
         _go_home: function() {
-          var lApp = document.querySelector('my-app');  //het polymer element <my-app>
-          var lAppRouter = lApp.$.approuter;            // het html-element <app-route> met id=approuter
-          lAppRouter.data={page: ""};                   // vul het data attribute met de homepage url
-                                                        // door de two way binding in <app-route> en <app-location>
-                                                        // zal ook de url echt wijzigen
+          var lApp = document.querySelector('my-app'); 
+          var lAppRouter = lApp.$.approuter;           
+          lAppRouter.data={page: ""};                 
         },
         
         _initializing : function() {
-          if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
+          if (this.c_visible) { 
+			//controleer of er al op een klas of naam gezocht word                            
         	var getUrl = window.location.href;
             var getPostValue = getUrl.split("/").pop();
-            if(getPostValue != "absentielijst"){
+            if(getPostValue != "absentielijst"){ //als er wel een klas is geselecteerd
   				this.c_klas = getPostValue;
   				this.c_info = "U kijkt nu naar klas: " + this.c_klas;
-            } else { 
+            } else {  //Als er nog geen klas is geklikt
             	this.c_klas= ""; 
             	this.c_info = "Kies een klas of zoek naar een leerling."; 
             }
@@ -218,7 +214,7 @@
           } else if(this.c_info == ""){
         	  this.c_info = "Kies een klas of zoek naar een leerling.";
           }
-          this._c_studenten = request.detail.response;
+          this._c_studenten = request.detail.response; //Vul de studenten array met studenten
         },
 
        _toast_clicked: function(e) {
