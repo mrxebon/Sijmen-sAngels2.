@@ -213,10 +213,7 @@
             if (this.c_rol=="docent") {
             	this._banaan_ophalen_request_handler();
             	this._c_studenten = "";
-            	this.selectedValue = "";
-            	if(this.c_klas != ""){
-            		this._absentielijst_ophalen_request_handler(); 
-            		}
+            	if(this.c_klas != ""){ this._absentielijst_ophalen_request_handler(); }
             } else {                                            // na handmatige url wijziging zonder login
               var lToast = this.$.toast_invalid_aanroep;        // meldt ongeldige aanroep
               lToast.open();                                    /* het sluiten van deze error verwijst  */
