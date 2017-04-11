@@ -221,10 +221,11 @@ public class PrIS {
 		String s="";
 		boolean firstString =true;
 		for (Absentie absentie : deAbsenties) {
-			if (absentie.getAbsentie() == true && firstString==false) {
-				s=s+":"+absentie.toString();
-			}
+
 			if (absentie.getStudentNummer() == studentNummer) {
+				if (absentie.getAbsentie() == true && firstString==false) {
+					s=s+":"+absentie.toString();
+				}
 				if (absentie.getAbsentie() == true && firstString==true) {
 					s=s+absentie.toString();
 					firstString=false;
