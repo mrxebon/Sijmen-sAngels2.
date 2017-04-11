@@ -20,6 +20,7 @@ public class Absentie {
 		}
 		isZiek = leerling.getZiek();
 	}
+	
 
 	public boolean getZiek() {
 		return isZiek;
@@ -63,6 +64,14 @@ public class Absentie {
 		
 		
 		return x;
+	}
+	public String toString(){
+		String s="niet ziek";
+		if (leerling.getZiek()==true){
+			s="ziek";
+			//vak datum, isziek
+		}
+		return deLes.getKlas()+","+deLes.getDatum()+","+s;
 	}
 
 }
