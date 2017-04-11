@@ -150,6 +150,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <iron-icon icon="account-box"></iron-icon>
             <span>Inloggen</span>
           </a>
+          
+          <a name="wachtwoord_wijzigen" href$="[[_c_baseURL]]wachtwoord_wijzigen"  verborgen$="[[_are_strings_equal(_rol, 'undefined')]]">
+            <iron-icon icon="social:group"></iron-icon>
+            <span>Wachtwoord Wijzigen</span>
+          </a>
 
           <!-- beschikbaar voor docent---------------------------------------------------- -->
           <a name="docent_absentielijst" href$="[[_c_baseURL]]docent/absentielijst"  verborgen$="[[!_are_strings_equal(_rol, 'docent')]]">
@@ -171,6 +176,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <iron-icon icon="social:group"></iron-icon>
             <span>Ziek melden</span>
           </a>
+          
           <a name="student_studentabsentie" href$="[[_c_baseURL]]student/studentabsentie"  verborgen$="[[!_are_strings_equal(_rol, 'student')]]">
             <iron-icon icon="social:group"></iron-icon>
             <span>Mijn Absentie</span>
@@ -245,6 +251,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                    element="my-logout">
             <paper-material elevation="1">
               <my-logout rol="{{_rol}}"></my-logout>
+            </paper-material>
+          </section>
+          
+          <section  name="wachtwoord_wijzigen"
+                    title="WACHTWOORD WIJZIGEN"
+                    element$="my-wachtwoordwijzigen">
+            <paper-material elevation="1">
+              <my-wachtwoordwijzigen
+                c_visible="[[_are_strings_equal(_ar_page, 'wachtwoord_wijzigen')]]"
+                c_rol="[[_rol]]"
+                c_username="[[_username]]">
+              </my-wachtwoordwijzigen>
             </paper-material>
           </section>
 
