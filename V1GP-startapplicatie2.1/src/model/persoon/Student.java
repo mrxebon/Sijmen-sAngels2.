@@ -25,7 +25,7 @@ public class Student extends Persoon {
 		this.setAanwezigheid(0.0);
 	}
 
-
+//dit gebruikten we uiteindelijk niet, een overblijfsel van de startapplicatie
  public String getGroepId() {
     return this.groepId;	
   }
@@ -33,7 +33,7 @@ public class Student extends Persoon {
   public void setGroepId(String pGroepId) {
     this.groepId= pGroepId;	
   }
-  
+ //deze functies zijn uiteindelijk ook niet gebruikt, de class absentie heeft dit overgenomen 
   public double getAanwezigheid() {
     return this.aanwezigheid;	
   }
@@ -41,7 +41,7 @@ public class Student extends Persoon {
   public void setAanwezigheid(double procent) {
     this.aanwezigheid= procent;	
   }
- 
+ //returnt studentnummer
 	public int getStudentNummer() {
 		return this.studentNummer;
 	}
@@ -49,6 +49,9 @@ public class Student extends Persoon {
 	private void setStudentNummer(int pStudentNummer) {
 		this.studentNummer = pStudentNummer;
 	}
+	
+	//extra classes written by us, de boolean ziek is een status die op actief of inactief kan worden gezet, als een student ziek is wordt de boolean true anders is deze false.
+	//we gebruiken dit in de class absentie.
 	public boolean getZiek(){
 		return ziek;}
 	
