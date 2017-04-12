@@ -28,9 +28,7 @@ public class AbsentieLijstController implements Handler {
 			ophalen(conversation);
 		} else if (conversation.getRequestedURI().startsWith("/student/studentabsentie/ophalen")) {
 			studentophalen(conversation);
-		} else if (conversation.getRequestedURI().startsWith("/student/studentabsentie/chartdataophalen")) {
-			chartdataophalen(conversation);
-		} 
+		}
 	}
 	
 	private void ophalen(Conversation conversation) {
@@ -68,7 +66,8 @@ public class AbsentieLijstController implements Handler {
 					.add("id", lMedeStudent.getStudentNummer())																			     
 					.add("firstName", lMedeStudent.getVoornaam())	
 					.add("lastName", lLastName)				 
-				  .add("presence", informatieSysteem.presentiePercentageVanStudent(lMedeStudent.getStudentNummer()));					     
+				  .add("presence", informatieSysteem.presentiePercentageVanStudent(lMedeStudent.getStudentNummer()))
+				  .add("presencegem", informatieSysteem.gemiddeldeAbsentie());					     
 			  lJsonArrayBuilder.add(lJsonObjectBuilderVoorStudent);													//voeg het JsonObject aan de array toe				     
 		}
     String lJsonOutStr = lJsonArrayBuilder.build().toString();												// maak er een string van
@@ -108,31 +107,11 @@ public class AbsentieLijstController implements Handler {
 		.add("firstName", lStudentZelf.getVoornaam())	
 		.add("lastName", lLastName)	
 		.add("presence", informatieSysteem.presentiePercentageVanStudent(lStudentZelf.getStudentNummer()))
+		.add("presencegem", informatieSysteem.gemiddeldeAbsentie())
 		.add("absenties", AbsentieArrayBuilder);				//Voeg de absentie array toe als absenties	     
 		lJsonArrayBuilder.add(lJsonObjectBuilderVoorStudent);													//voeg het JsonObject aan de array toe		
 		
     String lJsonOutStr = lJsonArrayBuilder.build().toString();												// maak er een string van
 		conversation.sendJSONMessage(lJsonOutStr);					// string gaat terug naar de Polymer-GUI!
-	}
-	
-	private void chartdataophalen(Conversation conversation) {
-		JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
-		String klasnaam = lJsonObjectIn.getString("klas");
-		Klas lKlas = informatieSysteem.getKlas(klasnaam);  		
-		ArrayList<Student> lStudentenVanKlas = lKlas.getStudenten();		// Studenten van klas pakken
-  	JsonArrayBuilder ChartDataArrayBuilder = Json.createArrayBuilder(); // maak array voor de chartdata
-  	JsonArrayBuilder lJsonObjectBuilderVoorChartData = Json.createArrayBuilder(); // maak het JsonObject voor een chartdata
-  	lJsonObjectBuilderVoorChartData.add("Naam").add("Absentie").add("Gemiddelde");
-  	ChartDataArrayBuilder.add(lJsonObjectBuilderVoorChartData);
-  	for (Student lMedeStudent : lStudentenVanKlas) {
-  		lJsonObjectBuilderVoorChartData
-  		.add(lMedeStudent.getVoornaam())     
-  		.add(informatieSysteem.presentiePercentageVanStudent(lMedeStudent.getStudentNummer()))	
-  		.add(informatieSysteem.presentiePercentageVanKlas(klasnaam));				     
-  		ChartDataArrayBuilder.add(lJsonObjectBuilderVoorChartData);
-  	}
-  	
-  	String lJsonOutStr = ChartDataArrayBuilder.build().toString();												// maak er een string van
-		conversation.sendJSONMessage(lJsonOutStr);
 	}
 }

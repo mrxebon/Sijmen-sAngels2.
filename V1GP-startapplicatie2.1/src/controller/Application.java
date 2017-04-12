@@ -61,7 +61,8 @@ public class Application {
   	server.registerHandler("/docent/studentdetails/ophalen", absentielijstController);
   	server.registerHandler("/docent/studentdetails", absentielijstController);
   	server.registerHandler("/docent/chartsarray/klasarray", chartarrayController);
-
+  	server.registerHandler("/student/chartsarray/studentarray", chartarrayController);
+  	
 		server.start();
 	}
 }

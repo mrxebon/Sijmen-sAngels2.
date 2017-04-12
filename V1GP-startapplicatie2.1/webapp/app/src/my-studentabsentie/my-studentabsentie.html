@@ -44,6 +44,10 @@
       .studentenTable{
       	margin-left:20px;
       }
+      google-chart {
+		  height: 175px;
+		  width: 95%;
+		}
     </style>
 
     <paper-toast
@@ -72,6 +76,10 @@
 	          <th class="aanwezigheid">Aanwezigheid</th>
 	          <td class="input">[[header.presence]]%</td>
 	        </tr>
+	        <tr>
+	          <th class="aanwezigheid">Gemiddelde aanwezigheid</th>
+	          <td class="input">[[header.presencegem]]%</td>
+	        </tr>
 	        </table>
 	        <table class="absentieTable">
 		      <tr>
@@ -91,11 +99,14 @@
 		      </template>
 	      </table>
 	    </template>
+	    
 		<google-chart
-		  type="combo"
-	      options='{"seriesType": "bars", "series": {"1": {"type": "line"}}}'
-	      data='[[c_chartdata]]'>
+		type="bar"
+    options='{"title": "Aanwezigheid per les in %", "hAxis": {"minValue" : 0, "maxValue": 100}, "legend":"none"}'
+    cols='[{"label": "Vaknaam", "type": "string"},{"label": "Aanwezigheid %", "type": "number"}]'
+    rows='[[c_chartdata]]'>
 		</google-chart>
+		
     <iron-ajax
       id="ajax_studentabsentie_ophalen"
       method="POST"
@@ -103,6 +114,13 @@
       handle-as="json"
       on-response="_studentabsentie_ophalen_response_handler"
       last-response="{{ajaxResponse}}">
+    </iron-ajax>
+    <iron-ajax
+      id="ajax_chartdata_ophalen"
+      method="POST"
+      url="/student/chartsarray/studentarray"
+      handle-as="json"
+      on-response="_chartdata_ophalen_response_handler">
     </iron-ajax>
 
   </template>
@@ -162,6 +180,7 @@
               }
             if (this.c_rol=="student" || this.c_rol=="docent") {                        // voor studenten
               this._studentabsentie_ophalen_request_handler();    //    haal info op van server
+              this._chartdata_ophalen_request_handler();
             } else {                                            // na handmatige url wijziging zonder login
               var lToast = this.$.toast_invalid_aanroep;        // meldt ongeldige aanroep
               lToast.open();                                    /* het sluiten van deze error verwijst  */
@@ -179,9 +198,21 @@
           this.$.ajax_studentabsentie_ophalen.generateRequest();
         },
         _studentabsentie_ophalen_response_handler: function(request) {
-          console.log("Dit is de response: " + request.detail.response);
           this._c_studenten = request.detail.response;
         },
+        
+        _chartdata_ophalen_request_handler: function() {
+            console.log("chartdata ophalen leerling="+this.c_username);
+            this.$.ajax_chartdata_ophalen.contentType="application/json";
+            this.$.ajax_chartdata_ophalen.body={
+              "username":this.c_username
+            };
+            this.$.ajax_chartdata_ophalen.generateRequest();
+          },
+          _chartdata_ophalen_response_handler: function(request) {
+        	  console.log("Dit is de response van chardata: " + JSON.stringify(request.detail.response));
+            this.c_chartdata = request.detail.response;
+          },
         
        _toast_clicked: function(e) {
          var lToast = this.$.toast_invalid_aanroep;        // meldt ongeldige aanroep
