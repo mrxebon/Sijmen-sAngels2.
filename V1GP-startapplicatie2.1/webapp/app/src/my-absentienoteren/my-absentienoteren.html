@@ -74,10 +74,10 @@
         width: 250px;
       }
       .dropdown-content {
-        width: 400px;
+        width: 100%;
       }
       .dropdown-menu {
-        width: 300px
+        width: 500px;
       }
     </style>
 
@@ -98,7 +98,7 @@
     <paper-dropdown-menu class="dropdown-menu" label="Les">
       <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectedValue}}">
         <template is="dom-repeat" items="[[_c_lessen]]">
-          <paper-item value="[[item.vak]]"><a href="#/docent/absentienoteren/[[item.klas]]">[[item.docent]] [[item.vak]] [[item.klas]] [[item.begintijd]] [[item.eindtijd]]</a></paper-item>
+          <paper-item value="[[item.vak]]"><a href="#/docent/absentienoteren/[[item.klas]]">[[item.docent]] [[item.vak]] [[item.klas]] [[item.begintijd]]-[[item.eindtijd]]</a></paper-item>
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
