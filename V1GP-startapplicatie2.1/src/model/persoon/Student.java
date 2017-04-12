@@ -54,7 +54,7 @@ public class Student extends Persoon {
 	//we gebruiken dit in de class absentie.
 	public boolean getZiek(){
 		return ziek;}
-	
+	//setziek zet de status ziek op true of false.
 	public void setZiek(boolean zk){
 		ziek = zk;}
 	
