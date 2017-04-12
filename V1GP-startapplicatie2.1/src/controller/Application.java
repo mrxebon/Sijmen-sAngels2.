@@ -38,6 +38,7 @@ public class Application {
 		AbsentieLijstController absentielijstController = new AbsentieLijstController(infoSysteem);
 		AbsentieNoterenController absentienoterenController = new AbsentieNoterenController(infoSysteem);
 		WachtwoordWijzigenController wachtwoordWijzigenController = new WachtwoordWijzigenController(infoSysteem);
+		ChartArrayController chartarrayController = new ChartArrayController(infoSysteem);
 				
 		server.registerHandler("/systeemdatum/lesinfo", systeemDatumController);
 
@@ -59,7 +60,7 @@ public class Application {
   	server.registerHandler("/docent/absentienoteren/opslaan", absentienoterenController);
   	server.registerHandler("/docent/studentdetails/ophalen", absentielijstController);
   	server.registerHandler("/docent/studentdetails", absentielijstController);
-  	server.registerHandler("/student/studentabsentie/chartdataophalen", absentielijstController);
+  	server.registerHandler("/docent/chartsarray/klasarray", chartarrayController);
 
 		server.start();
 	}
