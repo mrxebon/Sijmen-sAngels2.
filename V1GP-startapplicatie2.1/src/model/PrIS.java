@@ -63,6 +63,7 @@ public class PrIS {
 
 		// Inladen van lessen via rooster.csv
 		vulLessen(deLessen);
+		
 
 	} // Einde Pris constructor
 
@@ -394,6 +395,46 @@ public class PrIS {
 			}
 			System.out.println(deAbsenties);
 			
+	}
+	public String getLessenStudent(int studentNummer){
+		String s="";
+		String klasCode="";
+		boolean eerste=true;
+		ArrayList<String> list= new ArrayList<String>();
+		for(Klas klas : deKlassen){
+			ArrayList<Student> Stuud=klas.getStudenten();
+			for(Student student : Stuud){
+				if(student.getStudentNummer()==studentNummer){
+					
+					klasCode=klas.getKlasCode();
+
+				}
+			}
+			for(Les les : deLessen){
+				
+				if(les.getKlas().equals(klasCode)){
+					if (list.contains(les.getVak())){
+						
+					}
+					else{
+						list.add(les.getVak());
+						if(eerste==false){
+							s=s+":"+les.getVak();
+						}
+						else{
+							eerste= false;
+							s=s+les.getVak();
+						}
+						}
+					
+					
+				}
+				
+			}
+		}
+		
+		System.out.println(s);
+		return s;
 	}
 
 	// hier komen de vul de lijst functies
