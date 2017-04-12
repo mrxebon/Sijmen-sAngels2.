@@ -9,7 +9,7 @@ import server.Conversation;
 import server.Handler;
 
 public class WachtwoordWijzigenController implements Handler {
-	private PrIS informatieSysteem;
+	private PrIS informatieSysteem; //
 	
 	public WachtwoordWijzigenController(PrIS infoSys) {
 		informatieSysteem = infoSys;
