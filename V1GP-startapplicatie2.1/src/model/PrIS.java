@@ -295,6 +295,26 @@ public class PrIS {
 			return (int)presentie;
 		}
 	}
+	
+	public int gemiddeldeAbsentie() {
+		int absent = 0;
+		int totaal = 0;
+		for (Absentie absentie : deAbsenties) {
+			
+				if (absentie.getAbsentie() == true) {
+					absent = absent + 1;
+				}
+				totaal = totaal + 1;
+			}
+
+		
+		if (absent == 0) {
+			return 100;
+		} else {
+			double presentie = 100 - ((double)absent / (double)totaal * 100);
+			return (int)presentie;
+		}
+	}
 // berekend de procentuele aanwezigheid van de klas.
 	public int presentiePercentageVanKlas(String klasCode) {
 		int absent = 0;
