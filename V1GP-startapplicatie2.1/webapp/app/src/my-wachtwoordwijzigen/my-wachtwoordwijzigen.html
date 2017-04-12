@@ -26,9 +26,33 @@
 
     <paper-toast
       id="toast_invalid_aanroep"
-      duration="0"
-      text="U hebt dit scherm op een illegale manier geactiveerd. U wordt verwezen naar de home page!">
-        <paper-button on-click="_toast_clicked" class="toast-button">Sluiten</paper-button>
+      duration="4500"
+      text="Fout: U hebt onvoldoende permissies om de aanvraag uit te voeren. U wordt doorverwezen naar de home page.">
+        <paper-button on-click="_toast_invalid_aanroep_close" class="toast-button">Home</paper-button>
+    </paper-toast>
+
+    <paper-toast
+      id="toast_invalid_password"
+      duration="4500"
+      text="Fout: Het huidige wachtwoord is incorrect ingevoerd.">
+    </paper-toast>
+
+    <paper-toast
+      id="toast_invalid_new_password"
+      duration="4500"
+      text="Fout: De ingevoerde nieuwe wachtwoorden komen niet overeen.">
+    </paper-toast>
+
+    <paper-toast
+      id="toast_short_password"
+      duration="4500"
+      text="Fout: Nieuwe wachtwoord is te kort. Geef een wachtwoord op van minstens 6 karakters.">
+    </paper-toast>
+
+    <paper-toast
+      id="toast_succes"
+      duration="4500"
+      text="Wachtwoord succesvol gewijzigd.">
     </paper-toast>
 
     <div class="my-title">Wachtwoord wijzigen</div>
@@ -59,7 +83,7 @@
           c_visible: {
             type: Boolean,
             value: false,
-            observer: '_initialize',
+            observer: '_clear_fields',
           },
           c_username: {    
             type: String,
@@ -67,22 +91,49 @@
           c_rol: {
             type: String,
           },
-          _c_wachtwoord_nieuw2: {
-            type : String,
-          },
           _c_wachtwoord_huidig: {
             type: String,
           },
           _c_wachtwoord_nieuw: {
             type: String,
           },
+          _c_wachtwoord_nieuw2: {
+            type : String,
+          },
+        },
+
+        _clear_fields : function() { 
+          if (this.c_visible) {
+            this._c_wachtwoord_huidig = "";
+            this._c_wachtwoord_nieuw = "";
+            this._c_wachtwoord_nieuw2 = "";
+          }
+        },
+
+        _go_home: function() {
+          var lApp = document.querySelector('my-app');
+          var lAppRouter = lApp.$.approuter;
+          lAppRouter.data={page: ""};
         },
 
         _wachtwoord_wijzigen_handler : function() {
+          if(this._c_wachtwoord_nieuw != this._c_wachtwoord_nieuw2) {
+            var toast = this.$.toast_invalid_new_password;
+                toast.open();
+            this._clear_fields();
+            return;
+          }
+          if(this._c_wachtwoord_nieuw.length < 6) {
+            var toast = this.$.toast_short_password;
+                toast.open();
+            this._clear_fields();
+            return;
+          }
           this.$.ajax_wachtwoordrequest.contentType="application/json";
           this.$.ajax_wachtwoordrequest.body = {
             "rol": this.c_rol,
             "username": this.c_username,
+            "nieuw": this._c_wachtwoord_nieuw,
             "nieuw2": this._c_wachtwoord_nieuw2,
             "huidig": this._c_wachtwoord_huidig,
           };
@@ -91,7 +142,25 @@
 
         _wachtwoord_response_handler : function(request) {
          var result = request.detail.response.result;
-         alert(result);          
+         this._clear_fields();
+         if(result == "succes") {
+          var toast = this.$.toast_succes;
+              toast.open();
+         }
+         else if(result == "wachtwoord_incorrect") {
+          var toast = this.$.toast_invalid_password;
+              toast.open();
+         }
+         else {
+          var toast = this.$.toast_invalid_aanroep;
+              toast.open();
+         }
+        },
+
+        _toast_invalid_aanroep_close: function(e) {
+         var toast = this.$.toast_invalid_aanroep;
+         toast.toggle();
+         this._go_home();
         },
 
       });

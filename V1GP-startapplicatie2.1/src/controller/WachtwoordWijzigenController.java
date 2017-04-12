@@ -26,21 +26,32 @@ public class WachtwoordWijzigenController implements Handler {
   	
   	String rol = JsonObjectIn.getString("rol");
   	String naam = JsonObjectIn.getString("username");
-  	String wachtwoordNieuw = JsonObjectIn.getString("nieuw2");
-		String wachtwoordHuidig = JsonObjectIn.getString("huidig");
+  	String wachtwoordHuidig = JsonObjectIn.getString("huidig");
+  	String wachtwoordNieuw = JsonObjectIn.getString("nieuw");
 		
-		System.out.println(rol);
+		JsonObjectBuilder JsonObjectBuilder = Json.createObjectBuilder();
 		if(rol.equals("docent")) {
-			informatieSysteem.getDocent(naam).setWachtwoord(wachtwoordNieuw);
+			if(informatieSysteem.getDocent(naam).komtWachtwoordOvereen(wachtwoordHuidig)) {
+				informatieSysteem.getDocent(naam).setWachtwoord(wachtwoordNieuw);
+				JsonObjectBuilder.add("result", "succes");
+			}
+			else {
+				JsonObjectBuilder.add("result", "wachtwoord_incorrect");
+			}			
 		}
 		else if(rol.equals("student")) {
-			informatieSysteem.getStudent(naam).setWachtwoord(wachtwoordNieuw);
+			if(informatieSysteem.getStudent(naam).komtWachtwoordOvereen(wachtwoordHuidig)) {
+				informatieSysteem.getStudent(naam).setWachtwoord(wachtwoordNieuw);
+				JsonObjectBuilder.add("result", "succes");
+			}
+			else {
+				JsonObjectBuilder.add("result", "wachtwoord_incorrect");
+			}
 		}
-		
-  	JsonObjectBuilder JsonObjectBuilder = Json.createObjectBuilder();
-  		JsonObjectBuilder.add("result", "succes");
-		String lJsonOut = JsonObjectBuilder.build().toString();
-		
+		else {
+			JsonObjectBuilder.add("result", "rol_incorrect");
+		}		
+		String lJsonOut = JsonObjectBuilder.build().toString();		
 		conversation.sendJSONMessage(lJsonOut);
   }
 }
