@@ -139,11 +139,11 @@
       on-response="_absentielijst_ophalen_response_handler">
     </iron-ajax>
     <iron-ajax
-      id="ajax_banaan_ophalen"
+      id="ajax_leslijst_ophalen"
       method="POST"
       url="/docent/absentienoteren/lessen"
       handle-as="json"
-      on-response="_banaan_ophalen_response_handler">
+      on-response="_leslijst_ophalen_response_handler">
     </iron-ajax>
     <iron-ajax
       id="ajax_absentielijst_opslaan"
@@ -218,7 +218,7 @@
          	else{ this.c_klas = ""; this.c_info = "Kies een les.";  }
 
             if (this.c_rol=="docent") {
-            	this._banaan_ophalen_request_handler();
+            	this._leslijst_ophalen_request_handler();
             	this._c_studenten = "";
             	if(this.c_klas != ""){ this._absentielijst_ophalen_request_handler(); }
             } else {                                            // na handmatige url wijziging zonder login
@@ -237,22 +237,20 @@
           };
           this.$.ajax_absentielijst_ophalen.generateRequest();
         },
-
         _absentielijst_ophalen_response_handler: function(request) {
           console.log("_absentielijst_ophalen_response_handler aantal studenten="+request.detail.response.length);
           this._c_studenten = request.detail.response;
         },
         
-        _banaan_ophalen_request_handler: function() {
+        _leslijst_ophalen_request_handler: function() {
             console.log("klas="+this.c_klas);
-            this.$.ajax_banaan_ophalen.contentType="application/json";
-            this.$.ajax_banaan_ophalen.body={
+            this.$.ajax_leslijst_ophalen.contentType="application/json";
+            this.$.ajax_leslijst_ophalen.body={
               "datum":this.c_datum
             };
-            this.$.ajax_banaan_ophalen.generateRequest();
+            this.$.ajax_leslijst_ophalen.generateRequest();
           },
-
-          _banaan_ophalen_response_handler: function(request) {
+          _leslijst_ophalen_response_handler: function(request) {
             console.log("aantal lessen="+request.detail.response.length);
             if(request.detail.response.length == 0){ this.c_info = "Er zijn geen lessen vandaag."; }
             this._c_lessen = request.detail.response;
@@ -268,7 +266,6 @@
           };
           this.$.ajax_absentielijst_opslaan.generateRequest();
         },
-
         _absentielijst_opslaan_response_handler: function(request) {
           console.log("Absentielijst opgeslagen");
           var toast = this.$.toast_absentie_opgeslagen;
