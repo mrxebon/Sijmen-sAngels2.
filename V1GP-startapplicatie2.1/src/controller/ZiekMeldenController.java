@@ -16,34 +16,34 @@ public class ZiekMeldenController implements Handler {
 	}
 
 	public void handle(Conversation conversation) {
-	  if(conversation.getRequestedURI().startsWith("/student/ziekmelden/ziekteupdated")) {
+	  if(conversation.getRequestedURI().startsWith("/student/ziekmelden/ziekteupdated")) {						//Request om de status van ziekte te veranderen in het systeem
 	  	toggleZiekte(conversation);
 	  }
-	  else if(conversation.getRequestedURI().startsWith("/student/ziekmelden/ziekterequest")) {
+	  else if(conversation.getRequestedURI().startsWith("/student/ziekmelden/ziekterequest")) {				//Request om de status van ziekte op te vragen bij het systeem
 	  	verzendZiekte(conversation);
 	  }
 	}
   
 	private void verzendZiekte(Conversation conversation) {
   	JsonObject JsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
-		String studentGebruikersnaam = JsonObjectIn.getString("username");
-		boolean isZiek = informatieSysteem.getStudent(studentGebruikersnaam).getZiek();
-		
+		String studentGebruikersnaam = JsonObjectIn.getString("username");															//Gebruikersenaam (= E-mailadres) van gebruiker
+		boolean isZiek = informatieSysteem.getStudent(studentGebruikersnaam).getZiek();									//Staat de gebruiker op dit moment als ziek gemeld in het systeem?..
+																																																		
   	JsonObjectBuilder JsonObjectBuilder = Json.createObjectBuilder();
-  	if(isZiek)
+  	if(isZiek)																																											
   		JsonObjectBuilder.add("ziek", "wel");
   	else
   		JsonObjectBuilder.add("ziek", "niet");
 		String lJsonOut = JsonObjectBuilder.build().toString();
 		
-		conversation.sendJSONMessage(lJsonOut);
+		conversation.sendJSONMessage(lJsonOut);																													//.. stuur dat antwoord terug.
   }
 	
   private void toggleZiekte(Conversation conversation) {
   	JsonObject JsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
-		String studentGebruikersnaam = JsonObjectIn.getString("username");
-		boolean isZiek = informatieSysteem.getStudent(studentGebruikersnaam).getZiek();
-		isZiek =! isZiek;		
-		informatieSysteem.getStudent(studentGebruikersnaam).setZiek(isZiek);
+		String studentGebruikersnaam = JsonObjectIn.getString("username");															//Gebruikersenaam (= E-mailadres) van gebruiker
+		boolean isZiek = informatieSysteem.getStudent(studentGebruikersnaam).getZiek();									//Haal op of de gebruiker als ziek gemeld staat in het systeem
+		isZiek =! isZiek;																																								//Flip die waarde om en..
+		informatieSysteem.getStudent(studentGebruikersnaam).setZiek(isZiek);														//.. sla de nieuwe waarde weer op in het systeem.
   }
 }

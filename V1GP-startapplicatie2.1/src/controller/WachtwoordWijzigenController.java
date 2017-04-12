@@ -24,19 +24,19 @@ public class WachtwoordWijzigenController implements Handler {
 	private void wijzigWachtwoord(Conversation conversation) {
   	JsonObject JsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
   	
-  	String rol = JsonObjectIn.getString("rol");
-  	String naam = JsonObjectIn.getString("username");
-  	String wachtwoordHuidig = JsonObjectIn.getString("huidig");
-  	String wachtwoordNieuw = JsonObjectIn.getString("nieuw");
+  	String rol = JsonObjectIn.getString("rol");																					//Rol (docent/student) van gebruiker
+  	String naam = JsonObjectIn.getString("username");																		//Gebruikersnaam (= E-mail adres) van gebruiker
+  	String wachtwoordHuidig = JsonObjectIn.getString("huidig");													//Ingevoerde huidige wachtwoord van de gebruiker
+  	String wachtwoordNieuw = JsonObjectIn.getString("nieuw");														//Gewenste nieuwe wachtwoord van de gebruiker
 		
 		JsonObjectBuilder JsonObjectBuilder = Json.createObjectBuilder();
-		if(rol.equals("docent")) {
-			if(informatieSysteem.getDocent(naam).komtWachtwoordOvereen(wachtwoordHuidig)) {
-				informatieSysteem.getDocent(naam).setWachtwoord(wachtwoordNieuw);
+		if(rol.equals("docent")) {																													//Is de gebruiker in kwestie een docent of een student?
+			if(informatieSysteem.getDocent(naam).komtWachtwoordOvereen(wachtwoordHuidig)) {		//Komt het ingevoerde wachtwoord overeen met het opgeslagen wachtwoord?
+				informatieSysteem.getDocent(naam).setWachtwoord(wachtwoordNieuw);								//Zo ja, verander het wachtwoord van de persoon in kwestie naar het gewenste nieuwe wachtwoord
 				JsonObjectBuilder.add("result", "succes");
 			}
 			else {
-				JsonObjectBuilder.add("result", "wachtwoord_incorrect");
+				JsonObjectBuilder.add("result", "wachtwoord_incorrect");												//Ingevoerde huidige wachtwoord komt niet overeen; stuur foutmelding terug
 			}			
 		}
 		else if(rol.equals("student")) {
@@ -49,7 +49,7 @@ public class WachtwoordWijzigenController implements Handler {
 			}
 		}
 		else {
-			JsonObjectBuilder.add("result", "rol_incorrect");
+			JsonObjectBuilder.add("result", "rol_incorrect");																	//Gebruiker is een docent noch student; stuur foutmelding terug.
 		}		
 		String lJsonOut = JsonObjectBuilder.build().toString();		
 		conversation.sendJSONMessage(lJsonOut);
