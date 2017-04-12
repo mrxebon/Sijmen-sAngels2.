@@ -73,7 +73,7 @@ public class Absentie {
 	//returnt een string voor gebruik op de website
 	public String toString(){
 		String s="niet ziek";
-		if (leerling.getZiek()==true){
+		if (isZiek==true){
 			s="ziek";
 			//vak datum, isziek
 		}
