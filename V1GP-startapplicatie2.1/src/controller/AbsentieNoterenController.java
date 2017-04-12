@@ -36,6 +36,7 @@ public class AbsentieNoterenController implements Handler {
 		}
 	}
 	
+	//Deze methode pakt aan de hand van de klas alle leerlingen uit die klas, en stuurt vervolgens een array terug met deze leerlingen.
 	private void ophalen(Conversation conversation) {
 		JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
 		String klasnaam = ((klasnaam = lJsonObjectIn.getString("klas")) != null) ? klasnaam : "V1B"; //als er geen klas is aangeklikt gebruik V1B
@@ -51,15 +52,16 @@ public class AbsentieNoterenController implements Handler {
 					.add("lastName", lLastName)				 
 				  .add("presence", lMedeStudent.getAanwezigheid())	
 					.add("absent", false);
-			  
 			  lJsonArrayBuilder.add(lJsonObjectBuilderVoorStudent);		
 		}
     String lJsonOutStr = lJsonArrayBuilder.build().toString();
 		conversation.sendJSONMessage(lJsonOutStr);	
 	}
 	
+	//Deze methode pakt aan de hand van de datum alle lessen van die datum en stuurt deze in een array terug.
 	private void lessenOphalen(Conversation conversation) {
 		JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
+		//De format van de string moet omgezet worden vanwege een andere notatie in het systeem
 		String datum = lJsonObjectIn.getString("datum");
 		SimpleDateFormat format1 = new SimpleDateFormat("d-M-yyyy");
 		SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
@@ -87,6 +89,7 @@ public class AbsentieNoterenController implements Handler {
 		conversation.sendJSONMessage(lJsonOutStr);	
 	}
 	
+	//Deze methode pakt alle doorgegeven informatie maakt een absentie aan voor alle studenten van de les.
 	private void opslaan(Conversation conversation) {
 		JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
     String klas = lJsonObjectIn.getString("klas");
@@ -96,7 +99,6 @@ public class AbsentieNoterenController implements Handler {
 		SimpleDateFormat format1 = new SimpleDateFormat("d-M-yyyy");
 		SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
 		String newdate = null;
-		
 		try {
 			Date date = format1.parse(datum);
 			newdate = format2.format(date);
@@ -107,7 +109,6 @@ public class AbsentieNoterenController implements Handler {
 				boolean absent = lGroepMember_jsonObj.getBoolean("absent");
 				int studentNummer = lGroepMember_jsonObj.getInt("id");
 				informatieSysteem.addabsentie(newdate, studentNummer, vak, klas, absent);
-
 			}
 		}
 		

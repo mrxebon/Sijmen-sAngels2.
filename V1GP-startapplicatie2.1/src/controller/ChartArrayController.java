@@ -31,14 +31,15 @@ public class ChartArrayController implements Handler {
 		}
 	}
 	
+	//Deze methode pakt aan de hand van de klas de data die nodig is om de grafiek te vullen bij het klassenoverzicht.
 	private void klasarray(Conversation conversation) {
 		JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
 		String klasnaam = lJsonObjectIn.getString("klas");
 		Klas lKlas = informatieSysteem.getKlas(klasnaam);  		
 		ArrayList<Student> lStudentenVanKlas = lKlas.getStudenten();		// Studenten van klas pakken
-  	JsonArrayBuilder ChartDataArrayBuilder = Json.createArrayBuilder(); // maak array voor de chartdata
-  	JsonArrayBuilder lJsonObjectBuilderVoorChartData = Json.createArrayBuilder(); // maak het JsonObject voor een chartdata
-  	lJsonObjectBuilderVoorChartData.add("Naam").add("Absentie").add("Gemiddelde");
+  	JsonArrayBuilder ChartDataArrayBuilder = Json.createArrayBuilder(); 
+  	JsonArrayBuilder lJsonObjectBuilderVoorChartData = Json.createArrayBuilder(); 
+  	lJsonObjectBuilderVoorChartData.add("Naam").add("Absentie").add("Gemiddelde"); 
   	ChartDataArrayBuilder.add(lJsonObjectBuilderVoorChartData);
   	for (Student lMedeStudent : lStudentenVanKlas) {
   		lJsonObjectBuilderVoorChartData
@@ -48,16 +49,17 @@ public class ChartArrayController implements Handler {
   		ChartDataArrayBuilder.add(lJsonObjectBuilderVoorChartData);
   	}
   	
-  	String lJsonOutStr = ChartDataArrayBuilder.build().toString();												// maak er een string van
+  	String lJsonOutStr = ChartDataArrayBuilder.build().toString();											
 		conversation.sendJSONMessage(lJsonOutStr);
 	}
 	
+	//Deze methode pakt aan de hand van de gebruikersnaam de data die nodig is om de grafiek te vullen bij de studentinfo
 	private void studentarray(Conversation conversation) { 
 		JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
 		String studentnaam = lJsonObjectIn.getString("username");
 		Student lStudentZelf = informatieSysteem.zoekStudent(studentnaam.replaceAll("\\s+",""));
-  	JsonArrayBuilder ChartDataArrayBuilder = Json.createArrayBuilder(); // maak array voor de chartdata
-  	JsonArrayBuilder lJsonObjectBuilderVoorChartData = Json.createArrayBuilder(); // maak het JsonObject voor een chartdata
+  	JsonArrayBuilder ChartDataArrayBuilder = Json.createArrayBuilder(); 
+  	JsonArrayBuilder lJsonObjectBuilderVoorChartData = Json.createArrayBuilder(); 
   	
   	String lessen = informatieSysteem.getLessenStudent(lStudentZelf.getStudentNummer());
   	List<String> lessenList = Arrays.asList(lessen.split(":"));
@@ -67,7 +69,7 @@ public class ChartArrayController implements Handler {
   		.add(informatieSysteem.presentiePercentageVanStudentperVak(lStudentZelf.getStudentNummer(), les));			     
   		ChartDataArrayBuilder.add(lJsonObjectBuilderVoorChartData);
   	}
-  	String lJsonOutStr = ChartDataArrayBuilder.build().toString();												// maak er een string van
+  	String lJsonOutStr = ChartDataArrayBuilder.build().toString();												
 		conversation.sendJSONMessage(lJsonOutStr);
 	}
 }
