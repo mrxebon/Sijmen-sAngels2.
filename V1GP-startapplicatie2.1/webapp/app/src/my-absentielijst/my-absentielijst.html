@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/google-chart/google-chart.html">
 
 <dom-module id="my-absentielijst">
   <template>
@@ -57,6 +58,10 @@
       .studentenTable{
       	margin-left:20px;
       }
+      google-chart {
+		  height: 300px;
+		  width: 50em;
+		}
       .studentenTable tr:nth-child(even) {background-color: #f2f2f2}
     </style>
 
@@ -67,7 +72,12 @@
         <paper-button on-click="_toast_clicked" class="toast-button">Sluiten</paper-button>
     </paper-toast>
     <div class="my-title">Absentielijst</div>
-    
+    <google-chart
+	  type='pie'
+	  options='{"title": "Distribution of days in 2001Q1"}'
+	  cols='[{"label":"Month", "type":"string"}, {"label":"Days", "type":"number"}]'
+	  rows='[["Jan", 31],["Feb", 28],["Mar", 31]]'>
+	</google-chart>
 	<!-- Maak een table voor de klasbuttons -->
     <table>
       <tr>
