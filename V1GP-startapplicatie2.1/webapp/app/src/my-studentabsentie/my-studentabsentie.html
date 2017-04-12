@@ -91,7 +91,11 @@
 		      </template>
 	      </table>
 	    </template>
-
+		<google-chart
+		  type="combo"
+	      options='{"seriesType": "bars", "series": {"1": {"type": "line"}}}'
+	      data='[[c_chartdata]]'>
+		</google-chart>
     <iron-ajax
       id="ajax_studentabsentie_ophalen"
       method="POST"
@@ -121,6 +125,9 @@
           _c_absenties: {
               type: Array, 
           },
+          c_chartarray: {
+              type: Array, 
+          },
           c_rol: {
             type: String,
           },
@@ -146,11 +153,11 @@
         },
         
         _initializing : function() { 
-          if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
+          if (this.c_visible) {                           // zodra zichtbaar geworden moet er wat worden gedaan
         	  var getUrl = window.location.href;
               var getPostValue = getUrl.split("/").pop();
-              var newUsername = getPostValue.toLowerCase();
               if(getPostValue != "studentabsentie"){
+            	    var newUsername = getPostValue.toLowerCase();
     				this.c_username = newUsername;
               }
             if (this.c_rol=="student" || this.c_rol=="docent") {                        // voor studenten

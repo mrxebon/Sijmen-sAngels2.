@@ -110,8 +110,8 @@
     </table>
     <google-chart
 	  type="combo"
-    options='{"seriesType": "bars", "series": {"1": {"type": "line"}}}'
-    data='[[c_chartdata]]'>
+      options='{"seriesType": "bars", "series": {"1": {"type": "line"}}}'
+      data='[[c_chartdata]]'>
 	</google-chart>
 
     <iron-ajax
@@ -124,7 +124,7 @@
     <iron-ajax
       id="ajax_chartdata_ophalen"
       method="POST"
-      url="/student/studentabsentie/chartdataophalen"
+      url="/docent/chartsarray/klasarray"
       handle-as="json"
       on-response="_chartdata_ophalen_response_handler">
     </iron-ajax>
@@ -211,7 +211,7 @@
             }
             if (this.c_rol=="docent") {                        // voor studenten
               this._absentielijst_ophalen_request_handler();    //    haal info op van server
-              this._chartdata_ophalen_request_handler();
+              if(this.c_klas != ""){ this._chartdata_ophalen_request_handler(); }
             } else {                                            // na handmatige url wijziging zonder login
               var lToast = this.$.toast_invalid_aanroep;        // meldt ongeldige aanroep
               lToast.open();                                    /* het sluiten van deze error verwijst  */
@@ -247,7 +247,6 @@
             this.$.ajax_chartdata_ophalen.generateRequest();
           },
           _chartdata_ophalen_response_handler: function(request) {
-        	console.log("chartdata response: "+JSON.stringify(request.detail.response));
             this.c_chartdata = request.detail.response;
           },
 

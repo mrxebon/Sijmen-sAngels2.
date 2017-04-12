@@ -80,23 +80,24 @@ public class AbsentieLijstController implements Handler {
 	private void studentophalen(Conversation conversation) {
 		JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
 		String lGebruikersnaam = lJsonObjectIn.getString("username");
-		Student lStudentZelf = informatieSysteem.getStudent(lGebruikersnaam);
+		Student lStudentZelf = informatieSysteem.getStudent(lGebruikersnaam.replaceAll("\\s+",""));
 		String data = informatieSysteem.weergeefAlleAbsenten(lStudentZelf.getStudentNummer()); //haal alle absenties van de student op
 		
 		JsonArrayBuilder AbsentieArrayBuilder = Json.createArrayBuilder(); // maak array voor de absenties
 		JsonObjectBuilder lJsonObjectBuilderVoorAbsentie = Json.createObjectBuilder(); // maak het JsonObject voor een absentie
-		List<String> dataList = Arrays.asList(data.split(":"));
-		for(String absentie : dataList){
-			String[] absentieData = absentie.split(",");
-			String vak = absentieData[0];
-			String datum = absentieData[1];
-			String ziek = absentieData[2];
-			
-			lJsonObjectBuilderVoorAbsentie //vul absentie object met data
-			.add("vak", vak)     
-			.add("datum", datum)	
-			.add("ziek", ziek);				     
-			AbsentieArrayBuilder.add(lJsonObjectBuilderVoorAbsentie);			//voeg het JsonObject aan de array voor absenties toe		
+		if(data.length() > 0){
+  		List<String> dataList = Arrays.asList(data.split(":"));
+  		for(String absentie : dataList){
+  			String[] absentieData = absentie.split(",");
+  			String vak = absentieData[0];
+  			String datum = absentieData[1];
+  			String ziek = absentieData[2];
+  			lJsonObjectBuilderVoorAbsentie //vul absentie object met data
+  			.add("vak", vak)     
+  			.add("datum", datum)	
+  			.add("ziek", ziek);				     
+  			AbsentieArrayBuilder.add(lJsonObjectBuilderVoorAbsentie);			//voeg het JsonObject aan de array voor absenties toe		
+  		}
 		}
 		
 		JsonArrayBuilder lJsonArrayBuilder = Json.createArrayBuilder();						// Maak array voor return
@@ -129,7 +130,6 @@ public class AbsentieLijstController implements Handler {
   		.add(informatieSysteem.presentiePercentageVanStudent(lMedeStudent.getStudentNummer()))	
   		.add(informatieSysteem.presentiePercentageVanKlas(klasnaam));				     
   		ChartDataArrayBuilder.add(lJsonObjectBuilderVoorChartData);
-  		//ChartDataArrayBuilder.add("[\""+lMedeStudent.getVoornaam()+"\","+informatieSysteem.presentiePercentageVanStudent(lMedeStudent.getStudentNummer())+","+50+"]");
   	}
   	
   	String lJsonOutStr = ChartDataArrayBuilder.build().toString();												// maak er een string van
