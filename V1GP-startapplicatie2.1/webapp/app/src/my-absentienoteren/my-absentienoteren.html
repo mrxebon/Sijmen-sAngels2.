@@ -83,9 +83,15 @@
 
     <paper-toast
       id="toast_invalid_aanroep"
-      duration="0"
-      text="U hebt dit scherm op een illegale manier geactiveerd. U wordt verwezen naar de home page!">
-        <paper-button on-click="_toast_clicked" class="toast-button">Sluiten</paper-button>
+      duration="4000"
+      text="Fout: U hebt onvoldoende permissies om de aanvraag uit te voeren. U wordt doorverwezen naar de home page.">
+        <paper-button on-click="_toast_clicked" class="toast-button">Home</paper-button>
+    </paper-toast>
+
+    <paper-toast
+      id="toast_absentie_opgeslagen"
+      duration="4000"
+      text="Absenties zijn succesvol bijgewerkt.">
     </paper-toast>
 
     <div class="my-title">Absentie noteren </div>
@@ -107,8 +113,8 @@
       </tr>
       <template is="dom-repeat" items="[[_c_studenten]]">
         <tr>
-          <td class="voornaam">  <a href$="#/student/studentabsentie/[[item.firstName]].[[item.lastName]]@student.hu.nl">[[item.firstName]]</a></td>
-          <td class="achternaam"><a href$="#/student/studentabsentie/[[item.firstName]].[[item.lastName]]@student.hu.nl">[[item.lastName]] </a></td>
+          <td class="voornaam">[[item.firstName]]</td>
+          <td class="achternaam">[[item.lastName]]</td>
           <td class="absent">
             <paper-checkbox
               class="my-check"
@@ -263,13 +269,14 @@
         },
 
         _absentielijst_opslaan_response_handler: function(request) {
-          console.log("opslaan response handler");
-          this._go_home();
+          console.log("Absentielijst opgeslagen");
+          var toast = this.$.toast_absentie_opgeslagen;
+              toast.open();
         },
 
        _toast_clicked: function(e) {
-         var lToast = this.$.toast_invalid_aanroep;        // meldt ongeldige aanroep
-         lToast.toggle();
+         var toast = this.$.toast_invalid_aanroep;        // meldt ongeldige aanroep
+         toast.toggle();
          this._go_home();
         },
 

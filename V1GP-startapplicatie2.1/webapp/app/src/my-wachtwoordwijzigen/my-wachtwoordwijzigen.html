@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="elements.html">
 
 <dom-module id="my-wachtwoordwijzigen">
   <template>
@@ -26,33 +27,37 @@
 
     <paper-toast
       id="toast_invalid_aanroep"
-      duration="4500"
+      duration="4000"
       text="Fout: U hebt onvoldoende permissies om de aanvraag uit te voeren. U wordt doorverwezen naar de home page.">
         <paper-button on-click="_toast_invalid_aanroep_close" class="toast-button">Home</paper-button>
     </paper-toast>
 
     <paper-toast
       id="toast_invalid_password"
-      duration="4500"
+      duration="4000"
       text="Fout: Het huidige wachtwoord is incorrect ingevoerd.">
+      <iron-icon style="float: left; margin-right: 10px" icon="notification:priority-high">Hoi</iron-icon>
     </paper-toast>
 
     <paper-toast
       id="toast_invalid_new_password"
-      duration="4500"
+      duration="4000"
       text="Fout: De ingevoerde nieuwe wachtwoorden komen niet overeen.">
+      <iron-icon style="float: left; margin-right: 10px" icon="notification:priority-high">Hoi</iron-icon>
     </paper-toast>
 
     <paper-toast
       id="toast_short_password"
-      duration="4500"
+      duration="4000"
       text="Fout: Nieuwe wachtwoord is te kort. Geef een wachtwoord op van minstens 6 karakters.">
+      <iron-icon style="float: left; margin-right: 10px" icon="notification:priority-high">Hoi</iron-icon>
     </paper-toast>
 
     <paper-toast
       id="toast_succes"
-      duration="4500"
+      duration="4000"
       text="Wachtwoord succesvol gewijzigd.">
+      <iron-icon style="float: left; margin-right: 10px" icon="icons:check-circle">Hoi</iron-icon>
     </paper-toast>
 
     <div class="my-title">Wachtwoord wijzigen</div>

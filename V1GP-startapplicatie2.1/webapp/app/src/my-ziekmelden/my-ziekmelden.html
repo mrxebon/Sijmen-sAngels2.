@@ -10,6 +10,20 @@
       }
     </style>
 
+    <paper-toast
+      id="toast_invalid_aanroep"
+      duration="4000"
+      text="Fout: U hebt onvoldoende permissies om de aanvraag uit te voeren. U wordt doorverwezen naar de home page.">
+        <paper-button on-click="_toast_clicked" class="toast-button">Home</paper-button>
+    </paper-toast>
+
+    <paper-toast
+      id="toast_ziekte_bijgewerkt"
+      duration="4000"
+      text="Status van ziekte succesvol bijgewerkt.">
+      <iron-icon style="float: left; margin-right: 10px" icon="icons:check-circle">Hoi</iron-icon>
+    </paper-toast>
+
     <div class="info-text">
       <br>
       Op dit moment sta je <b>[[c_is_ziek]]</b> als ziek gemeld.
@@ -84,6 +98,8 @@
           };
           this.$.ajax_ziekteupdated.generateRequest();
           this._is_ziek_request_handler();
+          var toast = this.$.toast_ziekte_bijgewerkt;
+              toast.open();
         },
 
         _is_ziek_response_handler: function(request) {
