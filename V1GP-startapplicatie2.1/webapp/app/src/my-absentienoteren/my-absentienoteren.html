@@ -83,9 +83,16 @@
 
     <paper-toast
       id="toast_invalid_aanroep"
-      duration="0"
-      text="U hebt dit scherm op een illegale manier geactiveerd. U wordt verwezen naar de home page!">
-        <paper-button on-click="_toast_clicked" class="toast-button">Sluiten</paper-button>
+      duration="4500"
+      text="Fout: U hebt onvoldoende permissies om de aanvraag uit te voeren. U wordt doorverwezen naar de home page.">
+        <paper-button on-click="_toast_clicked" class="toast-button">Home</paper-button>
+    </paper-toast>
+
+    <paper-toast
+      id="toast_absentie_opgeslagen"
+      duration="4500"
+      text="Absenties zijn succesvol bijgewerkt.">
+         <paper-button on-click="_toast_clicked" class="toast-button">Home</paper-button>
     </paper-toast>
 
     <div class="my-title">Absentie noteren </div>
@@ -263,8 +270,9 @@
         },
 
         _absentielijst_opslaan_response_handler: function(request) {
-          console.log("opslaan response handler");
-          this._go_home();
+          console.log("Absentielijst opgeslagen");
+          var toast = this.$.toast_absentie_opgeslagen;
+              toast.open();
         },
 
        _toast_clicked: function(e) {
