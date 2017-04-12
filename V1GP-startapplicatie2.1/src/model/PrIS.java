@@ -61,6 +61,7 @@ public class PrIS {
 		// Inladen docenten
 		vulDocenten(deDocenten);
 
+		// Inladen van lessen via rooster.csv
 		vulLessen(deLessen);
 
 	} // Einde Pris constructor
@@ -99,7 +100,7 @@ public class PrIS {
 		String lString = Integer.toString(lJaar) + "-" + lMaandStr + "-" + lDagStr;
 		return lString;
 	}
-
+	/**een standaard inbegrepen zoekfunctie, niet door ons gebruikt, wel degelijk interessant**/
 	public Docent getDocent(String gebruikersnaam) {
 		Docent resultaat = null;
 
@@ -113,6 +114,8 @@ public class PrIS {
 		return resultaat;
 	}
 
+	/**een functie die de lessenVan vandaag terug geeft, wij gebruiken deze functies om de lessen van de dag in de
+	 * systeemtijd door te geven aan de pagina die dit weer gebruikt om de lessen van die dag door te geven**/
 	public ArrayList<Les> getLessenVanDatum(String datum) {
 		deLessenVanVandaag.clear();
 		for (Les les : deLessen) {
@@ -122,7 +125,8 @@ public class PrIS {
 		}
 		return deLessenVanVandaag;
 	}
-
+	/**deze functies worden door ons alleen voor de top layer gebruikt om de leslijsten te maken in de
+	 * website**/
 	public Klas getKlasVanStudent(Student pStudent) {
 		// used
 		for (Klas lKlas : deKlassen) {
@@ -132,7 +136,7 @@ public class PrIS {
 		}
 		return null;
 	}
-
+	
 	public Klas getKlas(String klasNaam) {
 		// used
 		Klas lGevondenKlas = null;
@@ -144,7 +148,7 @@ public class PrIS {
 		}
 		return lGevondenKlas;
 	}
-
+	
 	public Student zoekStudent(String nm) {
 		// used
 		Student lGevondenStudent = null;
@@ -156,7 +160,7 @@ public class PrIS {
 		}
 		return lGevondenStudent;
 	}
-
+	
 	public ArrayList<Student> zoekStudenten(String nm) {
 		// used
 		ArrayList<Student> gevondenStudenten = new ArrayList<Student>();
@@ -215,18 +219,25 @@ public class PrIS {
 
 		return "undefined";
 	}
-	//hier is de functie die de absenten van de individuele leerling afleest.
-	
+	//hier is de functie die de absenten van de individuele leerling afleest. en terugkeert in een lange splitbare String
+	// we zijn hier niet voor lijsten gegaan omdat html makkelijker werkt met strings
 	public String weergeefAlleAbsenten(int studentNummer){
+		// maak een ongemarkeerde string aan
 		String s="";
 		boolean firstString =true;
+		//checkt of dit het begin van de String is later
 		for (Absentie absentie : deAbsenties) {
-
+		//gaat de lijst met absenties door
 			if (absentie.getStudentNummer() == studentNummer) {
+				//checkt of de absentie van de lijst het studentnummer van de leerling heeft.
 				if (absentie.getAbsentie() == true && firstString==false) {
+					//checkt of de leerling toen asent of ziek was en of er een eerdere absentie was
 					s=s+":"+absentie.toString();
+					//print de tostring van absentie uit en voeg andere absentie tostrings er later aan toe de dubbele punten zijn om de string later te splitten
 				}
+				
 				if (absentie.getAbsentie() == true && firstString==true) {
+					//de eerste zin, zonder : nog want een absentie hoeft niet te worden gescheiden.
 					s=s+absentie.toString();
 					firstString=false;
 				}
@@ -238,14 +249,19 @@ public class PrIS {
 	}
 
 	// Hier komen de absentie functies
+	//berekend het aantal procent wat een leerling afwezig was
 	public int presentiePercentageVanStudent(int studentNummer) {
 		int absent = 0;
 		int totaal = 0;
 		for (Absentie absentie : deAbsenties) {
+			//leest de lijst met absenties door en checkt voor een studentnummer bij welke lessen hij zou moeten zijn en bij hoeveel hij aanwezig was.
 			if (absentie.getStudentNummer() == studentNummer) {
+				//hier checkt hij voor het studentnummer
 				if (absentie.getAbsentie() == true) {
 					absent = absent + 1;
+					//als het studentnummer wordt gevonden en de leerling wordt absent gerekend wordt dit getal hier gebruikt om aan te geven dat hij
 				}
+				
 				totaal = totaal + 1;
 			}
 
@@ -255,9 +271,11 @@ public class PrIS {
 		} else {
 			double presentie = 100 - ((double)absent / (double)totaal * 100);
 			return (int)presentie;
+			//dit berekend het percentage
+		//deze functie hier wordt eronder herhaald voor andere groepen
 		}
 	}
-
+	//berekend het aantal procent dat een student bij een specifiek vak aanwezig was.
 	public int presentiePercentageVanStudentperVak(int studentNummer, String vakCode) {
 		int absent = 0;
 		int totaal = 0;
@@ -277,7 +295,7 @@ public class PrIS {
 			return (int)presentie;
 		}
 	}
-
+// berekend de procentuele aanwezigheid van de klas.
 	public int presentiePercentageVanKlas(String klasCode) {
 		int absent = 0;
 		int totaal = 0;
@@ -297,7 +315,7 @@ public class PrIS {
 			return (int)presentie;
 		}
 	}
-
+//berekend de procentuele aanwezigheid van wat de klas aanwezig is.
 	public int percentageVanKlasPerVak(String klasCode, String vakCode) {
 		int absent = 0;
 		int totaal = 0;
@@ -318,7 +336,7 @@ public class PrIS {
 		}
 	}
 
-	// hier komt de setter
+	// hier komt de adder
 	public void addabsentie(String datum, int studentNummer, String vakNaam, String klasCode, boolean absent) {
 		Les les1 = null;
 		boolean isAlgemeld=false;
@@ -340,21 +358,21 @@ public class PrIS {
 			}
 			
 			Absentie a1 = new Absentie(absent, student1, les1);
-			
 			for(Absentie absentie : deAbsenties){
 				if(absentie.equals(a1)==true){
 					
 					isAlgemeld=true;
+					if (isAlgemeld==true){
+					}
 					
 				}
 			}
-			
-			
 			if(isAlgemeld==false){
 				deAbsenties.add(a1);
 				
 				
 			}
+			System.out.println(deAbsenties);
 			
 	}
 
