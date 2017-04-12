@@ -393,7 +393,6 @@ public class PrIS {
 				
 				
 			}
-			System.out.println(deAbsenties);
 			
 	}
 	public String getLessenStudent(int studentNummer){
