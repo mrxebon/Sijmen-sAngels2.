@@ -320,7 +320,7 @@ public class PrIS {
 		int absent = 0;
 		int totaal = 0;
 		for (Absentie absentie : deAbsenties) {
-			if (absentie.getKlas().getKlasCode().equals(klasCode)) {
+			if (absentie.getKlas().getNaam().equals(klasCode)) {
 				if (absentie.getAbsentie() == true) {
 					absent = absent + 1;
 				}
