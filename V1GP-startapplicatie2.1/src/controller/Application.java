@@ -59,7 +59,8 @@ public class Application {
   	server.registerHandler("/docent/absentienoteren/opslaan", absentienoterenController);
   	server.registerHandler("/docent/studentdetails/ophalen", absentielijstController);
   	server.registerHandler("/docent/studentdetails", absentielijstController);
-		
+  	server.registerHandler("/student/studentabsentie/chartdataophalen", absentielijstController);
+
 		server.start();
 	}
 }

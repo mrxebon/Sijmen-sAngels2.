@@ -57,10 +57,12 @@
       }
       .studentenTable{
       	margin-left:20px;
+      	width:95%;
       }
       google-chart {
-		  height: 300px;
-		  width: 50em;
+      	margin-left:20px;
+		  height: 175px;
+		  width: 95%;
 		}
       .studentenTable tr:nth-child(even) {background-color: #f2f2f2}
     </style>
@@ -72,12 +74,6 @@
         <paper-button on-click="_toast_clicked" class="toast-button">Sluiten</paper-button>
     </paper-toast>
     <div class="my-title">Absentielijst</div>
-    <google-chart
-	  type='pie'
-	  options='{"title": "Distribution of days in 2001Q1"}'
-	  cols='[{"label":"Month", "type":"string"}, {"label":"Days", "type":"number"}]'
-	  rows='[["Jan", 31],["Feb", 28],["Mar", 31]]'>
-	</google-chart>
 	<!-- Maak een table voor de klasbuttons -->
     <table>
       <tr>
@@ -112,6 +108,11 @@
         </tr>
       </template>
     </table>
+    <google-chart
+	  type="combo"
+    options='{"seriesType": "bars", "series": {"1": {"type": "line"}}}'
+    data='[[c_chartdata]]'>
+	</google-chart>
 
     <iron-ajax
       id="ajax_absentielijst_ophalen"
@@ -119,6 +120,13 @@
       url="/docent/absentielijst/ophalen"
       handle-as="json"
       on-response="_absentielijst_ophalen_response_handler">
+    </iron-ajax>
+    <iron-ajax
+      id="ajax_chartdata_ophalen"
+      method="POST"
+      url="/student/studentabsentie/chartdataophalen"
+      handle-as="json"
+      on-response="_chartdata_ophalen_response_handler">
     </iron-ajax>
 
   </template>
@@ -137,6 +145,9 @@
         properties: {
           _c_studenten: {
             type: Array,        //Array voor de studenten
+          },
+          c_chartdata: {
+              type: Array,        //Array voor de studenten
           },
           c_rol: {
             type: String,
@@ -200,6 +211,7 @@
             }
             if (this.c_rol=="docent") {                        // voor studenten
               this._absentielijst_ophalen_request_handler();    //    haal info op van server
+              this._chartdata_ophalen_request_handler();
             } else {                                            // na handmatige url wijziging zonder login
               var lToast = this.$.toast_invalid_aanroep;        // meldt ongeldige aanroep
               lToast.open();                                    /* het sluiten van deze error verwijst  */
@@ -217,7 +229,6 @@
           };
           this.$.ajax_absentielijst_ophalen.generateRequest();
         },
-
         _absentielijst_ophalen_response_handler: function(request) {
           if(request.detail.response != null){
         	  this.c_info += " met " + request.detail.response.length + " leerlingen.";
@@ -226,6 +237,19 @@
           }
           this._c_studenten = request.detail.response; //Vul de studenten array met studenten
         },
+        
+        _chartdata_ophalen_request_handler: function() {
+            console.log("chartdata ophalen klas="+this.c_klas);
+            this.$.ajax_chartdata_ophalen.contentType="application/json";
+            this.$.ajax_chartdata_ophalen.body={
+              "klas":this.c_klas
+            };
+            this.$.ajax_chartdata_ophalen.generateRequest();
+          },
+          _chartdata_ophalen_response_handler: function(request) {
+        	console.log("chartdata response: "+JSON.stringify(request.detail.response));
+            this.c_chartdata = request.detail.response;
+          },
 
        _toast_clicked: function(e) {
          var lToast = this.$.toast_invalid_aanroep;        // meldt ongeldige aanroep
