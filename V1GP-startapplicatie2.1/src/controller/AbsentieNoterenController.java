@@ -91,6 +91,7 @@ public class AbsentieNoterenController implements Handler {
 	
 	//Deze methode pakt alle doorgegeven informatie maakt een absentie aan voor alle studenten van de les.
 	private void opslaan(Conversation conversation) {
+		try{
 		JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
     String klas = lJsonObjectIn.getString("klas");
 		JsonArray studenten = lJsonObjectIn.getJsonArray("studenten");
@@ -111,6 +112,7 @@ public class AbsentieNoterenController implements Handler {
 				informatieSysteem.addabsentie(newdate, studentNummer, vak, klas, absent);
 			}
 		}
-		
+		}
+		catch(ClassCastException e){}
 	}
 }

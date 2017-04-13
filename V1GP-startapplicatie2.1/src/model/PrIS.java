@@ -362,38 +362,40 @@ public class PrIS {
 		Les les1 = null;
 		boolean isAlgemeld=false;
 		Student student1 = null;
-		for (Les les : deLessen) {
-
-			if (les.getObjectKlas().getNaam().equals(klasCode)&& les.getVak().equals(vakNaam) && les.getDatum().equals(datum)) {
-				
-				les1 = les;
-				
-			}
+		try{
+  		for (Les les : deLessen) {
+  
+  			if (les.getObjectKlas().getNaam().equals(klasCode)&& les.getVak().equals(vakNaam) && les.getDatum().equals(datum)) {
+  				
+  				les1 = les;
+  				
+  			}
+  		}
+  
+  			for (Student student : deStudenten) {
+  				if (student.getStudentNummer() == studentNummer) {
+  					student1 = student;
+  				}
+  
+  			}
+  			
+  			Absentie a1 = new Absentie(absent, student1, les1);
+  			for(Absentie absentie : deAbsenties){
+  				if(absentie.equals(a1)==true){
+  					
+  					isAlgemeld=true;
+  					if (isAlgemeld==true){
+  					}
+  					
+  				}
+  			}
+  			if(isAlgemeld==false){
+  				deAbsenties.add(a1);
+  				
+  				
+  			}
 		}
-
-			for (Student student : deStudenten) {
-				if (student.getStudentNummer() == studentNummer) {
-					student1 = student;
-				}
-
-			}
-			
-			Absentie a1 = new Absentie(absent, student1, les1);
-			for(Absentie absentie : deAbsenties){
-				if(absentie.equals(a1)==true){
-					
-					isAlgemeld=true;
-					if (isAlgemeld==true){
-					}
-					
-				}
-			}
-			if(isAlgemeld==false){
-				deAbsenties.add(a1);
-				
-				
-			}
-			
+		catch(ClassCastException e){}
 	}
 	public String getLessenStudent(int studentNummer){
 		String s="";
